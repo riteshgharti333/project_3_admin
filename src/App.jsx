@@ -16,7 +16,7 @@ import SingleTeams from "./pages/SingleDetail/SingleTeams/SingleTeams";
 import SingleContact from "./pages/SingleDetail/SingleContact/SingleContact";
 
 // update
-import UpdateSingleHomeBanner from "./pages/UpdateDetails/updateSingleHomeBanner/updateSingleHomeBanner";
+import UpdateSingleHomeBanner from "./pages/UpdateDetails/UpdateSingleHomeBanner/UpdateSingleHomeBanner";
 import UpdateSinglePorfolio from "./pages/UpdateDetails/UpdateSinglePortfolio/UpdateSinglePortfolio";
 import UpdateSingleTeams from "./pages/UpdateDetails/UpdateSingleTeams/UpdateSingleTeams";
 
