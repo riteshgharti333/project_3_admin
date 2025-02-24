@@ -26,6 +26,8 @@ import NewPortfolio from "./pages/NewDetails/NewPortfolio/NewPortfolio";
 import NewTeam from "./pages/NewDetails/NewTeam/NewTeam";
 
 import { Toaster } from "react-hot-toast";
+import Contact2Message from "./pages/Contact2Message/Contact2Message";
+import SingleContact2 from "./pages/SingleDetail/SingleContact2/SingleContact2";
 
 function App() {
   return (
@@ -66,6 +68,12 @@ function App() {
             <Route path="/new-team-member" element={<NewTeam />} />
 
             <Route path="/contact/:id" element={<SingleContact />} />
+
+            <Route path="/contact-2-messages" element={<Contact2Message />} />
+
+            <Route path="/contact-2/:id" element={<SingleContact2 />} />
+
+
           </Route>
         </Routes>
 

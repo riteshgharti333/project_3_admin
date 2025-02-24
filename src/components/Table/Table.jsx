@@ -21,7 +21,10 @@ const Table = ({ rowData, columnDefs, tableLink }) => {
       navigate(`/team/${id}`);
     } else if (tableLink === "contact") {
       navigate(`/contact/${id}`);
+    } else if (tableLink === "contact-2") {
+      navigate(`/contact-2/${id}`);
     }
+
   };
 
   return (

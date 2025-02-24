@@ -58,6 +58,14 @@ const Sidebar = () => {
             <p>Contact Messages</p>
           </div>
         </Link>
+
+        
+        <Link to={"/contact-2-messages"}>
+          <div className="sidebar-option">
+            <GrContact className="sidebar-icon" />
+            <p>Contact 2 Messages</p>
+          </div>
+        </Link>
       </div>
 
       {user ? (

@@ -22,8 +22,8 @@ const Navbar = () => {
         <img src={user_img} alt="" />
 
         <div className="user-desc">
-          <p>{user.user.name}</p>
-          <p>CEO</p>
+          <p>{user?.user?.name}</p>
+          {/* <p>CEO</p> */}
         </div>
       </div>
     </div>
