@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import Layout from "./components/Layout/Layout";
 import Dashboard from "./pages/Dashboard/Dashboard";
 
@@ -9,18 +9,18 @@ import ContactMessage from "./pages/ContactMessage/ContactMessage";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 
-//Single
+// Single
 import SingleHomeBanner from "./pages/SingleDetail/SingleHomeBanner/SingleHomeBanner";
 import SinglePortfolio from "./pages/SingleDetail/SinglePortfolio/SinglePortfolio";
 import SingleTeams from "./pages/SingleDetail/SingleTeams/SingleTeams";
 import SingleContact from "./pages/SingleDetail/SingleContact/SingleContact";
 
-// update
+// Update
 import UpdateSingleHomeBanner from "./pages/UpdateDetails/UpdateSingleHomeBanner/UpdateSingleHomeBanner";
 import UpdateSinglePorfolio from "./pages/UpdateDetails/UpdateSinglePortfolio/UpdateSinglePortfolio";
 import UpdateSingleTeams from "./pages/UpdateDetails/UpdateSingleTeams/UpdateSingleTeams";
 
-//new
+// New
 import NewHomeBanner from "./pages/NewDetails/NewHomeBanner/NewHomeBanner";
 import NewPortfolio from "./pages/NewDetails/NewPortfolio/NewPortfolio";
 import NewTeam from "./pages/NewDetails/NewTeam/NewTeam";
@@ -28,26 +28,22 @@ import NewTeam from "./pages/NewDetails/NewTeam/NewTeam";
 import { Toaster } from "react-hot-toast";
 import Contact2Message from "./pages/Contact2Message/Contact2Message";
 import SingleContact2 from "./pages/SingleDetail/SingleContact2/SingleContact2";
-import { ContextProvider } from "./context/Context";
+import { Context } from "./context/Context";
 import { useContext } from "react";
 
 function App() {
-
-  const { user } = useContext(ContextProvider);
-
-
-
+  const { user } = useContext(Context);
 
   return (
     <div className="app">
       <BrowserRouter>
         <Routes>
-          {/* Login Page - Without Layout */}
-         <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Register />} />
+          {/* Public Routes */}
+          <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
+          <Route path="/signup" element={user ? <Navigate to="/" /> : <Register />} />
 
-          {/* Wrap Layout Around These Routes */}
-          <Route element={<Layout />}>
+          {/* Protected Routes */}
+          <Route element={user ? <Layout /> : <Navigate to="/login" />}>
             <Route path="/" element={<Dashboard />} />
             <Route path="/home-banner" element={<HomeBanner />} />
             <Route path="/portfolio" element={<Portfolio />} />
@@ -55,35 +51,20 @@ function App() {
             <Route path="/messages" element={<ContactMessage />} />
             <Route path="/contact-2-messages" element={<Contact2Message />} />
 
-
             <Route path="/home-banner/:id" element={<SingleHomeBanner />} />
-            <Route
-              path="/update-home-banner/:id"
-              element={<UpdateSingleHomeBanner />}
-            />
+            <Route path="/update-home-banner/:id" element={<UpdateSingleHomeBanner />} />
             <Route path="/new-home-banner" element={<NewHomeBanner />} />
 
             <Route path="/portfolio/:id" element={<SinglePortfolio />} />
-            <Route
-              path="/update-portfolio/:id"
-              element={<UpdateSinglePorfolio />}
-            />
+            <Route path="/update-portfolio/:id" element={<UpdateSinglePorfolio />} />
             <Route path="/new-portfolio" element={<NewPortfolio />} />
 
             <Route path="/team/:id" element={<SingleTeams />} />
-            <Route
-              path="/update-team-member/:id"
-              element={<UpdateSingleTeams />}
-            />
-
+            <Route path="/update-team-member/:id" element={<UpdateSingleTeams />} />
             <Route path="/new-team-member" element={<NewTeam />} />
 
             <Route path="/contact/:id" element={<SingleContact />} />
-
-
             <Route path="/contact-2/:id" element={<SingleContact2 />} />
-
-
           </Route>
         </Routes>
 
