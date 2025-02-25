@@ -141,9 +141,9 @@ const NewTeam = () => {
               <span>Name: </span>{" "}
               <input
                 type="text"
-                placeholder="Enter Name..."
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Enter name..."
+                value={name}
+                onChange={(e) => setName(e.target.value)}
               />
             </div>
 
@@ -152,8 +152,8 @@ const NewTeam = () => {
               <input
                 type="text"
                 placeholder="Enter title..."
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
               />
             </div>
           </div>

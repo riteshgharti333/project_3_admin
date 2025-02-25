@@ -77,16 +77,19 @@
       .singleHomeBanner-contents-card {
         display: flex;
         align-items: center;
-        gap: 50px;
+        flex-direction: column;
+        gap: 20px;
 
         img {
           object-fit: contain;
-          height: 200px;
+          width: 100%;
+          height: 400px;
         }
 
         .singleHomeBanner-contents-card-desc {
+          text-align: center;
           h2 {
-            margin-bottom: 20px;
+            // margin-bottom: 20px;
           }
           p {
           }
