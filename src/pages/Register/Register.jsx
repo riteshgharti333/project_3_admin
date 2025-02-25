@@ -7,8 +7,18 @@ import logo from "../../assets/images/logo2.png";
 
 import { baseUrl } from "../../main";
 
+import { BiShow, BiHide } from "react-icons/bi";
+
+
 const Register = () => {
   const navigate = useNavigate();
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
 
   // State for form inputs
   const [formData, setFormData] = useState({
@@ -58,6 +68,7 @@ const Register = () => {
               placeholder="Enter your full name"
               value={formData.name}
               onChange={handleChange}
+              required
             />
           </div>
           <div className="input-group">
@@ -68,17 +79,28 @@ const Register = () => {
               placeholder="Enter your email"
               value={formData.email}
               onChange={handleChange}
+              required
             />
           </div>
           <div className="input-group">
             <label>Password</label>
+           
+            <div className="input-group-botom">
             <input
-              type="password"
-              name="password"
+             type={showPassword ? "text" : "password"}
               placeholder="Enter your password"
+              name="password"
               value={formData.password}
               onChange={handleChange}
+              required
             />
+
+            {showPassword ? (
+              <BiHide className="viewIcon" onClick={togglePasswordVisibility} />
+            ) : (
+              <BiShow className="viewIcon" onClick={togglePasswordVisibility} />
+            )}
+            </div>
           </div>
           {/* <div className="input-group">
             <label>Confirm Password</label>

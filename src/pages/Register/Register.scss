@@ -43,6 +43,30 @@
         color: #ffa500;
       }
 
+      .input-group-botom{
+        display: flex;
+        align-items: center;
+         
+        background-color: #333;
+        border-radius: 5px;
+
+        
+
+        .viewIcon{
+        font-size: 25px;
+        margin-right: 10px;
+        }
+        input{
+          border: none;
+
+          &:focus{
+            outline: none;
+            box-shadow: none;
+          }
+        }
+
+      }
+
       input {
         width: 100%;
         padding: 10px;
@@ -52,12 +76,13 @@
         color: #fff;
         font-size: 16px;
         font-family: "Sora", serif;
+        outline: none;
 
-        &:focus {
-          outline: none;
-          border-color: #ffa500;
-          box-shadow: 0 0 5px rgba(255, 165, 0, 0.5);
-        }
+        // &:focus {
+        //   outline: none;
+        //   border-color: #ffa500;
+        //   box-shadow: 0 0 5px rgba(255, 165, 0, 0.5);
+        // }
       }
     }
 

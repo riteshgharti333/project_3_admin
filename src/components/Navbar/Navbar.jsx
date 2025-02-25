@@ -1,6 +1,5 @@
 import "./Navbar.scss";
 
-import user_img from "../../assets/images/11.jpg";
 import { useContext } from "react";
 import { Context } from "../../context/Context";
 

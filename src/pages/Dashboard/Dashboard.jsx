@@ -3,6 +3,8 @@ import "./Dashboard.scss";
 import axios from "axios";
 import { baseUrl } from "../../main";
 
+import { Link } from "react-router-dom";
+
 const Dashboard = () => {
   const [totalMember, setTotalMember] = useState("");
   const [totalMessages, setTotalMessages] = useState("");
@@ -12,11 +14,16 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const [teamResponse, contactResponse, contact2Response, visitorResponse] = await Promise.all([
+        const [
+          teamResponse,
+          contactResponse,
+          contact2Response,
+          visitorResponse,
+        ] = await Promise.all([
           axios.get(`${baseUrl}/team/all-teams`),
           axios.get(`${baseUrl}/contact/all-contacts`),
           axios.get(`${baseUrl}/contact2/all-contact2`),
-          axios.get(`${baseUrl}/visitors/count`) // Fetch visitor count
+          axios.get(`${baseUrl}/visitors/count`), // Fetch visitor count
         ]);
 
         setTotalMember(teamResponse.data.teams.length);
@@ -35,7 +42,6 @@ const Dashboard = () => {
     <div className="dashboard">
       <div className="dashboard-top">
         <div className="dashboard-top-cards">
-          
           {/* ✅ Total Visitors */}
           <div className="dashboard-top-card">
             <h3>Total Visitors</h3>
@@ -48,26 +54,30 @@ const Dashboard = () => {
           </div>
 
           {/* ✅ Total Contact Messages */}
-          <div className="dashboard-top-card">
-            <h3>Total Contact Messages</h3>
-            <div className="dashboard-top-card-desc">
-              <h1>{totalMessages + totalMessages2}</h1>
-              <span>
-                <span className="line-break">/</span>Messages
-              </span>
+          <Link to={"/messages"}>
+            <div className="dashboard-top-card">
+              <h3>Total Contact Messages</h3>
+              <div className="dashboard-top-card-desc">
+                <h1>{totalMessages + totalMessages2}</h1>
+                <span>
+                  <span className="line-break">/</span>Messages
+                </span>
+              </div>
             </div>
-          </div>
+          </Link>
 
           {/* ✅ Total Team Members */}
-          <div className="dashboard-top-card">
-            <h3>Total Team Members</h3>
-            <div className="dashboard-top-card-desc">
-              <h1>{totalMember}</h1>
-              <span>
-                <span className="line-break">/</span>Members
-              </span>
+          <Link to={"/teams"}>
+            <div className="dashboard-top-card">
+              <h3>Total Team Members</h3>
+              <div className="dashboard-top-card-desc">
+                <h1>{totalMember}</h1>
+                <span>
+                  <span className="line-break">/</span>Members
+                </span>
+              </div>
             </div>
-          </div>
+          </Link>
         </div>
       </div>
     </div>

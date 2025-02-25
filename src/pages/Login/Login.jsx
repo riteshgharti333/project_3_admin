@@ -9,8 +9,12 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { Context } from "../../context/Context";
 
+import { BiShow, BiHide } from "react-icons/bi";
+
 const Login = () => {
   const navigate = useNavigate();
+
+  const [showPassword, setShowPassword] = useState(false);
 
 
   const { dispatch } = useContext(Context);
@@ -35,15 +39,19 @@ const Login = () => {
       });
 
       dispatch({ type: "LOGIN_SUCCESS", payload: response.data });
-     if(response && response.data){
-      toast.success(response.data.message);
-     }
+      if (response && response.data) {
+        toast.success(response.data.message);
+      }
       navigate("/");
     } catch (error) {
       dispatch({ type: "LOGIN_FAILURE" });
       toast.error(error.response.data.message);
       console.log(error);
     }
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   return (
@@ -62,17 +70,28 @@ const Login = () => {
               placeholder="Enter your email"
               value={formData.email}
               onChange={handleChange}
+              required
             />
           </div>
           <div className="input-group">
             <label>Password</label>
+            <div className="input-group-botom">
             <input
-              type="password"
+             type={showPassword ? "text" : "password"}
               placeholder="Enter your password"
               name="password"
               value={formData.password}
               onChange={handleChange}
+              required
             />
+
+            {showPassword ? (
+              <BiHide className="viewIcon" onClick={togglePasswordVisibility} />
+            ) : (
+              <BiShow className="viewIcon" onClick={togglePasswordVisibility} />
+            )}
+            </div>
+         
           </div>
           <button type="submit" className="login-button">
             Login
