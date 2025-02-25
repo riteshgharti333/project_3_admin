@@ -65,7 +65,7 @@ const Contact2Message = () => {
 
   return (
     <div className="contactMessage">
-      <h1>Contact Messages</h1>
+      <h1>Contact 2 Messages</h1>
       <Table rowData={rowData} columnDefs={columnDefs} tableLink="contact-2" />
     </div>
   );
