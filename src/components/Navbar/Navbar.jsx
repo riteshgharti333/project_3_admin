@@ -7,6 +7,8 @@ import { FaUser } from "react-icons/fa";
 import { useState } from "react";
 import { useEffect } from "react";
 
+import {Link} from "react-router-dom"
+
 const Navbar = () => {
   const { user } = useContext(Context);
 
@@ -27,14 +29,15 @@ const Navbar = () => {
         </div>
       </div>
 
-      <div className="navbar-right">
+      <Link to={"/profile"} className="navbar-right">
+
         <FaUser className="usericon" />
 
         <div className="user-desc">
           <p>{user?.user?.name}</p>
           {/* <p>CEO</p> */}
         </div>
-      </div>
+      </Link>
     </div>
   );
 };

@@ -30,6 +30,8 @@ import Contact2Message from "./pages/Contact2Message/Contact2Message";
 import SingleContact2 from "./pages/SingleDetail/SingleContact2/SingleContact2";
 import { Context } from "./context/Context";
 import { useContext } from "react";
+import Profile from "./pages/Profile/Profile";
+import UpdatePassword from "./pages/UpdatePassword/UpdatePassword";
 
 function App() {
   const { user } = useContext(Context);
@@ -50,6 +52,10 @@ function App() {
             <Route path="/teams" element={<Teams />} />
             <Route path="/messages" element={<ContactMessage />} />
             <Route path="/contact-2-messages" element={<Contact2Message />} />
+            <Route path="/profile" element={<Profile />} />
+          <Route path="/update-password" element={<UpdatePassword />} />
+
+
 
             <Route path="/home-banner/:id" element={<SingleHomeBanner />} />
             <Route path="/update-home-banner/:id" element={<UpdateSingleHomeBanner />} />
@@ -64,7 +70,12 @@ function App() {
             <Route path="/new-team-member" element={<NewTeam />} />
 
             <Route path="/contact/:id" element={<SingleContact />} />
+
             <Route path="/contact-2/:id" element={<SingleContact2 />} />
+
+
+            <Route path="*" element={<Navigate to="/" />} />
+
           </Route>
         </Routes>
 

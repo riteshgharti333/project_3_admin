@@ -16,7 +16,6 @@ const Login = () => {
 
   const [showPassword, setShowPassword] = useState(false);
 
-
   const { dispatch } = useContext(Context);
 
   const [formData, setFormData] = useState({
@@ -33,10 +32,14 @@ const Login = () => {
 
     dispatch({ type: "LOGIN_START" });
     try {
-      const response = await axios.post(`${baseUrl}/auth/login`, {
-        email: formData.email,
-        password: formData.password,
-      });
+      const response = await axios.post(
+        `${baseUrl}/auth/login`,
+        {
+          email: formData.email,
+          password: formData.password,
+        },
+        { withCredentials: true }
+      );
 
       dispatch({ type: "LOGIN_SUCCESS", payload: response.data });
       if (response && response.data) {
@@ -76,30 +79,35 @@ const Login = () => {
           <div className="input-group">
             <label>Password</label>
             <div className="input-group-botom">
-            <input
-             type={showPassword ? "text" : "password"}
-              placeholder="Enter your password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Enter your password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+              />
 
-            {showPassword ? (
-              <BiHide className="viewIcon" onClick={togglePasswordVisibility} />
-            ) : (
-              <BiShow className="viewIcon" onClick={togglePasswordVisibility} />
-            )}
+              {showPassword ? (
+                <BiHide
+                  className="viewIcon"
+                  onClick={togglePasswordVisibility}
+                />
+              ) : (
+                <BiShow
+                  className="viewIcon"
+                  onClick={togglePasswordVisibility}
+                />
+              )}
             </div>
-         
           </div>
           <button type="submit" className="login-button">
             Login
           </button>
         </form>
-        <p className="signup-link">
+        {/* <p className="signup-link">
           Don't have an account? <a href="/signup">Sign up</a>
-        </p>
+        </p> */}
       </div>
     </div>
   );
