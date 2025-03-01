@@ -12,6 +12,7 @@ const UpdateSingleTeams = () => {
   const fileInputRef = useRef(null);
   const navigate = useNavigate();
   const { id } = useParams();
+  
 
   const [formData, setFormData] = useState({
     title: "",

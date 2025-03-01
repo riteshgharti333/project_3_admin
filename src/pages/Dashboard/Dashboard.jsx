@@ -41,8 +41,10 @@ const Dashboard = () => {
   return (
     <div className="dashboard">
       <div className="dashboard-top">
+        
         <div className="dashboard-top-cards">
           {/* ✅ Total Visitors */}
+          
           <div className="dashboard-top-card">
             <h3>Total Visitors</h3>
             <div className="dashboard-top-card-desc">

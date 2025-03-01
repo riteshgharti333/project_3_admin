@@ -32,6 +32,10 @@ import { Context } from "./context/Context";
 import { useContext } from "react";
 import Profile from "./pages/Profile/Profile";
 import UpdatePassword from "./pages/UpdatePassword/UpdatePassword";
+import PhotoAlbum from "./pages/PhotoAlbum/PhotoAlbum";
+import SinglePhotoAlbum from "./pages/SingleDetail/SinglePhotoAlbum/SinglePhotoAlbum";
+import UpdatePhotoAlbum from "./pages/UpdateDetails/UpdatePhotoAlbum/UpdatePhotoAlbum";
+import NewPhotoAlbum from "./pages/NewDetails/NewPhotoAlbum/NewPhotoAlbum";
 
 function App() {
   const { user } = useContext(Context);
@@ -52,8 +56,12 @@ function App() {
             <Route path="/teams" element={<Teams />} />
             <Route path="/messages" element={<ContactMessage />} />
             <Route path="/contact-2-messages" element={<Contact2Message />} />
+            <Route path="/photo-album" element={<PhotoAlbum />} />
+
+
+
             <Route path="/profile" element={<Profile />} />
-          <Route path="/update-password" element={<UpdatePassword />} />
+            <Route path="/update-password" element={<UpdatePassword />} />
 
 
 
@@ -72,6 +80,18 @@ function App() {
             <Route path="/contact/:id" element={<SingleContact />} />
 
             <Route path="/contact-2/:id" element={<SingleContact2 />} />
+
+            <Route path="/contact-2/:id" element={<SingleContact2 />} />
+
+            <Route path="/photoAlbum/:id" element={<SinglePhotoAlbum />} />
+            <Route path="/update-photo-album/:id" element={<UpdatePhotoAlbum />} />
+            <Route path="/new-photo-album" element={<NewPhotoAlbum />} />
+
+
+
+
+
+
 
 
             <Route path="*" element={<Navigate to="/" />} />

@@ -1,5 +1,5 @@
 import { homeBannerData } from "../../assets/data";
-import "./HomeBanner.scss";
+import "./PhotoAlbum.scss";
 import Table from "../../components/Table/Table";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -7,51 +7,45 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { baseUrl } from "../../main";
 
-
-const HomeBanner = () => {
+const PhotoAlbum = () => {
   const [rowData, setRowData] = useState([]);
 
   useEffect(() => {
     const fetchHomeBanners = async () => {
       try {
         const { data } = await axios.get(
-          `${baseUrl}/home-banner/all-home-banners`
+          `${baseUrl}/photoAlbum/all-photo-album`
         );
-        
+        console.log(data)
+
         setRowData(
-          data.homeBanners.map((item) => ({
+          data.albums.map((item) => ({
             id: item._id,
-            bannerTitle: item.bannerTitle,
-            bannerCount: item.bannerDetails.length,
+            imageCount: item.images.length,
             createdAt: new Date(item.createdAt).toLocaleDateString(),
           }))
         );
       } catch (error) {
-        console.error("Error fetching home banners:", error);
+        console.error("Error fetching photo album:", error);
       }
     };
 
     fetchHomeBanners();
   }, []);
 
+ console.table(rowData)
+
   const columnDefs = [
     {
-      headerName: "Banner ID",
+      headerName: "ID",
       field: "id",
       flex: 1,
       cellStyle: { textAlign: "center" },
       headerClass: "header-center",
     },
     {
-      headerName: "Banner Title",
-      field: "bannerTitle",
-      flex: 2,
-      cellStyle: { textAlign: "center" },
-      headerClass: "header-center",
-    },
-    {
-      headerName: "Banner Count",
-      field: "bannerCount",
+      headerName: "Images Count",
+      field: "imageCount",
       flex: 1,
       cellStyle: { textAlign: "center" },
       headerClass: "header-center",
@@ -65,16 +59,16 @@ const HomeBanner = () => {
     },
   ];
   return (
-    <div className="homeBanner">
-      <div className="homeBanner-top">
-        <h1>Home Banners</h1>
-        <Link to={"/new-home-banner"}>
-          <button>Add New Banners</button>
+    <div className="photoAlbum">
+      <div className="photoAlbum-top">
+        <h1>Photo Album</h1>
+        <Link to={"/new-photo-album"}>
+          <button>Add New Photo Album</button>
         </Link>
       </div>
-      <Table rowData={rowData} columnDefs={columnDefs} tableLink="homeBanner" />
+      <Table rowData={rowData} columnDefs={columnDefs} tableLink="photoAlbum" />
     </div>
   );
 };
 
-export default HomeBanner;
+export default PhotoAlbum;

@@ -9,6 +9,7 @@ import { IoLogOutOutline } from "react-icons/io5";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { Context } from "../../context/Context";
+import { IoAlbumsOutline } from "react-icons/io5";
 
 import { baseUrl } from "../../main";
 
@@ -23,6 +24,7 @@ const Sidebar = () => {
   const menuItems = [
     { path: "/", icon: <RxDashboard />, label: "Dashboard" },
     { path: "/home-banner", icon: <MdHomeMax />, label: "Home Banner" },
+    { path: "/photo-album", icon: <IoAlbumsOutline />, label: "Photo Album" },
     { path: "/portfolio", icon: <FaRegImage />, label: "Portfolio" },
     { path: "/teams", icon: <GrGroup />, label: "Teams" },
     { path: "/messages", icon: <GrContact />, label: "Contact Messages" },

@@ -25,6 +25,10 @@ const Table = ({ rowData, columnDefs, tableLink }) => {
       navigate(`/contact-2/${id}`);
     }
 
+    else if (tableLink === "photoAlbum") {
+      navigate(`/photoAlbum/${id}`);
+    }
+
   };
 
   return (
