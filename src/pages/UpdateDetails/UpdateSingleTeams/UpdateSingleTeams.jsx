@@ -12,7 +12,6 @@ const UpdateSingleTeams = () => {
   const fileInputRef = useRef(null);
   const navigate = useNavigate();
   const { id } = useParams();
-  
 
   const [formData, setFormData] = useState({
     title: "",
@@ -48,14 +47,14 @@ const UpdateSingleTeams = () => {
     formData.append("file", file);
     formData.append("upload_preset", "tk-site");
     formData.append("cloud_name", "ddmucrojh");
-    formData.append("folder", "tk-site");
+    formData.append("folder", "tk-production-images/team");
 
     try {
       const { data } = await axios.post(
         `https://api.cloudinary.com/v1_1/ddmucrojh/image/upload`,
         formData
       );
-      return data.secure_url; // Return the uploaded image URL
+      return data.secure_url;
     } catch (error) {
       console.error("Cloudinary upload failed:", error);
       toast.error("Image upload failed.");

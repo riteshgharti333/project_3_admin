@@ -70,7 +70,7 @@ const NewHomeBanner = () => {
           formData.append("file", banner.file);
           formData.append("upload_preset", "tk-site");
           formData.append("cloud_name", "ddmucrojh");
-          formData.append("folder", "tk-site");
+          formData.append("folder", "tk-production-images/homeBanner");
 
           const { data } = await axios.post(
             `https://api.cloudinary.com/v1_1/ddmucrojh/image/upload`,

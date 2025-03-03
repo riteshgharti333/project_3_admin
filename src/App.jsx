@@ -45,8 +45,14 @@ function App() {
       <BrowserRouter>
         <Routes>
           {/* Public Routes */}
-          <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
-          <Route path="/signup" element={user ? <Navigate to="/" /> : <Register />} />
+          <Route
+            path="/login"
+            element={user ? <Navigate to="/" /> : <Login />}
+          />
+          <Route
+            path="/signup"
+            element={user ? <Navigate to="/" /> : <Register />}
+          />
 
           {/* Protected Routes */}
           <Route element={user ? <Layout /> : <Navigate to="/login" />}>
@@ -58,23 +64,28 @@ function App() {
             <Route path="/contact-2-messages" element={<Contact2Message />} />
             <Route path="/photo-album" element={<PhotoAlbum />} />
 
-
-
             <Route path="/profile" element={<Profile />} />
             <Route path="/update-password" element={<UpdatePassword />} />
 
-
-
             <Route path="/home-banner/:id" element={<SingleHomeBanner />} />
-            <Route path="/update-home-banner/:id" element={<UpdateSingleHomeBanner />} />
+            <Route
+              path="/update-home-banner/:id"
+              element={<UpdateSingleHomeBanner />}
+            />
             <Route path="/new-home-banner" element={<NewHomeBanner />} />
 
             <Route path="/portfolio/:id" element={<SinglePortfolio />} />
-            <Route path="/update-portfolio/:id" element={<UpdateSinglePorfolio />} />
+            <Route
+              path="/update-portfolio/:id"
+              element={<UpdateSinglePorfolio />}
+            />
             <Route path="/new-portfolio" element={<NewPortfolio />} />
 
             <Route path="/team/:id" element={<SingleTeams />} />
-            <Route path="/update-team-member/:id" element={<UpdateSingleTeams />} />
+            <Route
+              path="/update-team-member/:id"
+              element={<UpdateSingleTeams />}
+            />
             <Route path="/new-team-member" element={<NewTeam />} />
 
             <Route path="/contact/:id" element={<SingleContact />} />
@@ -84,18 +95,13 @@ function App() {
             <Route path="/contact-2/:id" element={<SingleContact2 />} />
 
             <Route path="/photoAlbum/:id" element={<SinglePhotoAlbum />} />
-            <Route path="/update-photo-album/:id" element={<UpdatePhotoAlbum />} />
+            <Route
+              path="/update-photo-album/:id"
+              element={<UpdatePhotoAlbum />}
+            />
             <Route path="/new-photo-album" element={<NewPhotoAlbum />} />
 
-
-
-
-
-
-
-
             <Route path="*" element={<Navigate to="/" />} />
-
           </Route>
         </Routes>
 

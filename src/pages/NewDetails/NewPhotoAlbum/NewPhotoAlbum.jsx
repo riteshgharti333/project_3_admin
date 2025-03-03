@@ -54,9 +54,9 @@ const NewPhotoAlbum = () => {
       toast.error("Please add at least one photo before saving.");
       return;
     }
-  
+
     setLoading(true);
-  
+
     try {
       const uploadedPhotos = await Promise.all(
         photoAlbums.map(async (photo) => {
@@ -64,28 +64,28 @@ const NewPhotoAlbum = () => {
           formData.append("file", photo.file);
           formData.append("upload_preset", "tk-site");
           formData.append("cloud_name", "ddmucrojh");
-          formData.append("folder", "tk-site");
-  
+          formData.append("folder", "tk-production-images/photoAlbum");
+
           const { data } = await axios.post(
             `https://api.cloudinary.com/v1_1/ddmucrojh/image/upload`,
             formData
           );
-  
-          return data.secure_url; // ✅ Store only the URL
+
+          return data.secure_url;
         })
       );
-  
+
       // Save to database
       const response = await axios.post(
         `${baseUrl}/photoAlbum/new-photo-album`,
         {
-          images: uploadedPhotos, // ✅ Now it's an array of strings
+          images: uploadedPhotos,
         }
       );
-  
+
       if (response.data.success) {
         toast.success(response.data.message);
-        const newAlbumId = response.data.photoAlbum?._id;
+        const newAlbumId = response.data.album._id;
         if (newAlbumId) {
           navigate(`/photoAlbum/${newAlbumId}`);
         }
@@ -97,7 +97,6 @@ const NewPhotoAlbum = () => {
       setLoading(false);
     }
   }, [photoAlbums, navigate]);
-  
 
   return (
     <div className="newPhotoAlbum">

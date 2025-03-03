@@ -16,8 +16,6 @@ const PhotoAlbum = () => {
         const { data } = await axios.get(
           `${baseUrl}/photoAlbum/all-photo-album`
         );
-        console.log(data)
-
         setRowData(
           data.albums.map((item) => ({
             id: item._id,
@@ -33,7 +31,7 @@ const PhotoAlbum = () => {
     fetchHomeBanners();
   }, []);
 
- console.table(rowData)
+  console.table(rowData);
 
   const columnDefs = [
     {

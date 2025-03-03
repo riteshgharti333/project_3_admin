@@ -36,7 +36,7 @@ const NewPortfolio = () => {
     formData.append("file", file);
     formData.append("upload_preset", "tk-site");
     formData.append("cloud_name", "ddmucrojh");
-    formData.append("folder", "tk-site");
+    formData.append("folder", "tk-production-images/portfolio");
 
     try {
       const { data } = await axios.post(
