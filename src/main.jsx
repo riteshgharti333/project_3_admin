@@ -5,7 +5,7 @@ import App from './App.jsx'
 import "./styles/global.scss"
 import { ContextProvider } from "./context/Context";
 
-export const baseUrl = import.meta.env.VITE_MAIN_KEY;
+export const baseUrl = import.meta.env.VITE_BASE_URL;
 
 
 
