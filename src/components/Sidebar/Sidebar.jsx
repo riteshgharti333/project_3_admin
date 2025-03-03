@@ -4,22 +4,36 @@ import { RxDashboard } from "react-icons/rx";
 import { MdHomeMax } from "react-icons/md";
 import { FaRegImage } from "react-icons/fa";
 import { GrGroup, GrContact } from "react-icons/gr";
-import { HiOutlineLogin } from "react-icons/hi";
+import { MdMiscellaneousServices } from "react-icons/md";
 import { IoLogOutOutline } from "react-icons/io5";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Context } from "../../context/Context";
 import { IoAlbumsOutline } from "react-icons/io5";
+import { RiArrowRightSLine } from "react-icons/ri";
+import { motion } from "framer-motion";
 
 import { baseUrl } from "../../main";
 
 import axios from "axios";
 import { toast } from "react-hot-toast";
+import { services } from "../../assets/data";
 
 const Sidebar = () => {
   const { user, dispatch } = useContext(Context);
   const location = useLocation();
   const navigate = useNavigate();
+
+  const [openServices, setOpenServices] = useState(false);
+  const [allService, setAllService] = useState([]);
+
+  useEffect(() => {
+    const allServices = async () => {
+      const { data } = await axios.get(`${baseUrl}/services`);
+      setAllService(data?.services);
+    };
+    allServices();
+  }, []);
 
   const menuItems = [
     { path: "/", icon: <RxDashboard />, label: "Dashboard" },
@@ -67,14 +81,60 @@ const Sidebar = () => {
             </div>
           </Link>
         ))}
-      </div>
 
-      {user && (
-        <button className="logout-btn" onClick={handleLogout}>
-          Logout
-          <IoLogOutOutline className="login-icon" />
-        </button>
-      )}
+        <div className="sidebar-services">
+          <div
+            className="sidebar-option-services"
+            onClick={() => setOpenServices(!openServices)}
+          >
+            <div className="sidebar-option-services-left">
+              <MdMiscellaneousServices className="sidebar-icon" />
+              <p>Services</p>
+            </div>
+            <RiArrowRightSLine className="sidebar-right" />
+          </div>
+
+          {openServices && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{
+                height: openServices ? "auto" : 0,
+                opacity: openServices ? 1 : 0,
+              }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="services-links"
+            >
+              <ul>
+                {allService.length > 0 ? (
+                  allService.map((service, index) => {
+                    // Find matching service in 'services' array
+                    const matchedService = services.find(
+                      (s) => s.service_name === service.serviceName
+                    );
+                    return matchedService ? (
+                      <Link
+                        key={index}
+                        to={`${matchedService.link}/${service._id}`}
+                      >
+                        <li>{service.serviceName}</li>
+                      </Link>
+                    ) : null;
+                  })
+                ) : (
+                  <p>No services available</p>
+                )}
+              </ul>
+            </motion.div>
+          )}
+        </div>
+
+        {user && (
+          <button className="logout-btn" onClick={handleLogout}>
+            Logout
+            <IoLogOutOutline className="login-icon" />
+          </button>
+        )}
+      </div>
     </div>
   );
 };

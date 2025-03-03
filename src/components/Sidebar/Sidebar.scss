@@ -1,7 +1,6 @@
 .sidebar {
   background-color: #ffdee9;
   background-image: linear-gradient(0deg, #ffdee9 0%, #b5fffc 100%);
-  height: 100vh;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
@@ -33,11 +32,11 @@
       transition: all 0.3s ease;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
-      &.active{
+      &.active {
         background: #000;
         color: #fff;
         transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); 
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
       }
 
       &:hover {
@@ -60,6 +59,104 @@
       p {
         font-size: 16px;
         font-weight: 500;
+      }
+
+      .sidebar-services {
+        flex-direction: column;
+        .sidebar-option-services {
+          display: flex;
+          justify-content: space-between;
+          width: 100%;
+          align-items: center;
+
+          .sidebar-option-services-left {
+            display: flex;
+            gap: 15px;
+
+            .sidebar-icon {
+              font-size: 20px;
+              transition: color 0.3s ease;
+            }
+
+            p {
+              font-size: 16px;
+              font-weight: 500;
+            }
+          }
+
+          .sidebar-right {
+            font-size: 20px;
+          }
+        }
+      }
+    }
+
+    .sidebar-services {
+      flex-direction: column;
+      .sidebar-option-services {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        align-items: center;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        background-color: orange;
+        padding: 12px 15px;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+        &.active {
+          background: #000;
+          color: #fff;
+          transform: translateY(-2px);
+          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        &:hover {
+          background: #000;
+          color: #fff;
+          transform: translateY(-2px);
+          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .sidebar-option-services-left {
+          display: flex;
+          gap: 15px;
+
+          .sidebar-icon {
+            font-size: 20px;
+            transition: color 0.3s ease;
+          }
+
+          p {
+            font-size: 16px;
+            font-weight: 500;
+          }
+        }
+
+        .sidebar-right {
+          font-size: 20px;
+        }
+      }
+      .services-links {
+        ul {
+          list-style: none;
+          margin-top: 10px;
+          margin-left: 10px;
+
+          li {
+            padding: 7px 5px;
+            transition: all 0.3s ease-in-out;
+            border-radius: 12px;
+
+            &:hover {
+              background: #5858582f;
+            }
+          }
+        }
       }
     }
   }

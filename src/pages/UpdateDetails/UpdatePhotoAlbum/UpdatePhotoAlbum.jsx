@@ -18,7 +18,6 @@ const UpdatePhotoAlbum = () => {
     const fetchSingleAlbum = async () => {
       try {
         const { data } = await axios.get(`${baseUrl}/photoAlbum/${id}`);
-        console.log(data.album.images);
         setPhotoAlbum(data?.album?.images || []); //
       } catch (error) {
         console.error("Error fetching photo album:", error);
@@ -28,7 +27,6 @@ const UpdatePhotoAlbum = () => {
     fetchSingleAlbum();
   }, [id]);
 
- 
   const handleUpdate = async () => {
     setLoading(true);
     try {
@@ -44,14 +42,13 @@ const UpdatePhotoAlbum = () => {
       setLoading(false);
     }
   };
-  
+
   const handleDelete = (index) => {
     const updatedAlbumDetails = photoAlbum.filter((_, i) => i !== index);
-    setPhotoAlbum(updatedAlbumDetails); 
+    setPhotoAlbum(updatedAlbumDetails);
     setDeleteIndex(null);
     toast.success("Image removed from album (Not yet saved)");
   };
-  
 
   return (
     <div className="updatePhotoAlbum">

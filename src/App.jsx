@@ -37,6 +37,17 @@ import SinglePhotoAlbum from "./pages/SingleDetail/SinglePhotoAlbum/SinglePhotoA
 import UpdatePhotoAlbum from "./pages/UpdateDetails/UpdatePhotoAlbum/UpdatePhotoAlbum";
 import NewPhotoAlbum from "./pages/NewDetails/NewPhotoAlbum/NewPhotoAlbum";
 
+
+import Service1 from "./pages/Services/Service1/Service1";
+import Service2 from "./pages/Services/Service2/Service2";
+import Service3 from "./pages/Services/Service3/Service3";
+import Service4 from "./pages/Services/Service4/Service4";
+import Service5 from "./pages/Services/Service5/Service5";
+import Service6 from "./pages/Services/Service6/Service6";
+import Service7 from "./pages/Services/Service7/Service7";
+import Service8 from "./pages/Services/Service8/Service8";
+import Service9 from "./pages/Services/Service9/Service9";
+
 function App() {
   const { user } = useContext(Context);
 
@@ -100,6 +111,23 @@ function App() {
               element={<UpdatePhotoAlbum />}
             />
             <Route path="/new-photo-album" element={<NewPhotoAlbum />} />
+
+            {/* Services */}
+            <Route path="/wedding-photography/:id" element={<Service1 />} />
+            <Route path="/wedding-cinematography/:id" element={<Service2 />} />
+            <Route path="/pre-wedding-films/:id" element={<Service3 />} />
+            <Route path="/pre-wedding-photography/:id" element={<Service4 />} />
+            <Route path="/civil-marriage-photography/:id" element={<Service5 />} />
+            <Route
+              path="/engagement-photography-couple-portraits/:id"
+              element={<Service6 />}
+            />
+
+            <Route path="/birthday-photography/:id" element={<Service7 />} />
+
+            <Route path="/baby-shower-photography/:id" element={<Service8 />} />
+
+            <Route path="/graduation-photography/:id" element={<Service9 />} />
 
             <Route path="*" element={<Navigate to="/" />} />
           </Route>
