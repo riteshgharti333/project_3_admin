@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import "./HomeBanner.scss";
+import "./MobileBanner.scss";
 
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -7,15 +7,16 @@ import axios from "axios";
 import { baseUrl } from "../../main";
 import toast from "react-hot-toast";
 
-const HomeBanner = () => {
+const MobileBanner = () => {
   const [selectedImg, setSelectedImg] = useState(null);
   const [allData, setAllData] = useState([]);
-  
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await axios.get(`${baseUrl}/home-banner/all-home-banners`);
-        console.log(data)
+        const { data } = await axios.get(
+          `${baseUrl}/mobile/all-mobile-banners`
+        );
         if (data && data.homeBanner) {
           setAllData(data.homeBanner);
         }
@@ -31,7 +32,7 @@ const HomeBanner = () => {
     if (!id) return;
 
     try {
-      const { data } = await axios.delete(`${baseUrl}/home-banner/${id}`);
+      const { data } = await axios.delete(`${baseUrl}/mobile/${id}`);
 
       if (data) {
         toast.success(data.message);
@@ -48,9 +49,9 @@ const HomeBanner = () => {
   return (
     <div className="portfolio">
       <div className="portfolio-top">
-        <h1>Home Banner</h1>
-        <Link to={"/new-home-banner"}>
-          <button>Add New Home Banner</button>
+        <h1>Mobile Banner</h1>
+        <Link to={"/new-mobile-banner"}>
+          <button>Add New Mobile Banner</button>
         </Link>
       </div>
 
@@ -84,4 +85,4 @@ const HomeBanner = () => {
   );
 };
 
-export default HomeBanner;
+export default MobileBanner;

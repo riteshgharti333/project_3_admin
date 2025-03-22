@@ -12,6 +12,7 @@ import { Context } from "../../context/Context";
 import { IoAlbumsOutline } from "react-icons/io5";
 import { RiArrowRightSLine } from "react-icons/ri";
 import { motion } from "framer-motion";
+import { AiOutlineMobile } from "react-icons/ai";
 
 import { baseUrl } from "../../main";
 
@@ -38,6 +39,12 @@ const Sidebar = () => {
   const menuItems = [
     { path: "/", icon: <RxDashboard />, label: "Dashboard" },
     { path: "/home-banner", icon: <MdHomeMax />, label: "Home Banner" },
+    {
+      path: "/mobile-banner",
+      icon: <AiOutlineMobile />,
+      label: "Mobile Banner",
+    },
+
     { path: "/photo-album", icon: <IoAlbumsOutline />, label: "Photo Album" },
     { path: "/portfolio", icon: <FaRegImage />, label: "Portfolio" },
     { path: "/teams", icon: <GrGroup />, label: "Teams" },
