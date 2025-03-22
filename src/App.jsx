@@ -65,6 +65,7 @@ function App() {
           />
 
           {/* Protected Routes */}
+          
           <Route element={user ? <Layout /> : <Navigate to="/login" />}>
             <Route path="/" element={<Dashboard />} />
             <Route path="/home-banner" element={<HomeBanner />} />
