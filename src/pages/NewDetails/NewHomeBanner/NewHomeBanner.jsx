@@ -1,243 +1,127 @@
 import "./NewHomeBanner.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { RiArrowLeftWideFill } from "react-icons/ri";
-import { FaPlus, FaTrash } from "react-icons/fa6";
-import { useState, useRef, useCallback } from "react";
-import addImg from "../../../assets/images/addImg.svg";
+import { FaPlus } from "react-icons/fa6";
+import { useRef, useState } from "react";
+import AddImg from "../../../assets/images/addImg.svg";
+import axios from "axios";
 import { baseUrl } from "../../../main";
 import toast from "react-hot-toast";
-import axios from "axios";
 
 const NewHomeBanner = () => {
-  const [image, setImage] = useState(null);
-  const [file, setFile] = useState(null);
-  const [title, setTitle] = useState("");
-  const [desc, setDesc] = useState("");
-  const [bannerTitle, setBannerTitle] = useState("");
-  const [banners, setBanners] = useState([]);
   const fileInputRef = useRef(null);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [file, setFile] = useState(null);
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
 
-  // Handle image selection
-  const handleImageChange = useCallback((event) => {
-    const selectedFile = event.target.files[0];
-    if (selectedFile) {
-      setImage(URL.createObjectURL(selectedFile));
-      setFile(selectedFile);
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      setSelectedImage(imageUrl);
+      setFile(file);
     }
-  }, []);
+  };
 
-  // Open file input
-  const handleClick = useCallback(() => {
+  const handleButtonClick = () => {
     fileInputRef.current.click();
-  }, []);
+  };
 
-  // Add banner details WITHOUT uploading to Cloudinary
-  const handleAddBanner = useCallback(() => {
-    if (!file || !title || !desc) {
-      toast.error("Please fill all fields before adding.");
-      return;
-    }
-
-    const newBanner = { image, file, title, desc }; // Store local image & file
-    setBanners((prev) => [...prev, newBanner]);
-    setImage(null);
-    setFile(null);
-    setTitle("");
-    setDesc("");
-  }, [file, title, desc, image]);
-
-  // Remove banner
-  const handleRemoveBanner = useCallback((index) => {
-    setBanners((prev) => prev.filter((_, i) => i !== index));
-  }, []);
-
-  // Upload all images to Cloudinary & save banners to DB
-  const handleSaveToDatabase = useCallback(async () => {
-    if (!bannerTitle || banners.length === 0) {
-      toast.error("Please add a banner title and at least one banner.");
+  const addPortfolio = async () => {
+    if (!file) {
+      toast.error("Please select an image.");
       return;
     }
 
     setLoading(true);
 
     try {
-      const uploadedBanners = await Promise.all(
-        banners.map(async (banner) => {
-          const formData = new FormData();
-          formData.append("file", banner.file);
-          formData.append("upload_preset", "tk-site");
-          formData.append("cloud_name", "ddmucrojh");
-          formData.append("folder", "tk-production-images/homeBanner");
+      const formData = new FormData();
+      formData.append("image", file);
 
-          const { data } = await axios.post(
-            `https://api.cloudinary.com/v1_1/ddmucrojh/image/upload`,
-            formData
-          );
-
-          return {
-            image: data.secure_url, // Use Cloudinary URL
-            title: banner.title,
-            desc: banner.desc,
-          };
-        })
-      );
-
-      // Save to database
-      const response = await axios.post(
+      const { data } = await axios.post(
         `${baseUrl}/home-banner/new-home-banner`,
+        formData,
         {
-          bannerTitle,
-          bannerDetails: uploadedBanners,
+          headers: { "Content-Type": "multipart/form-data" },
         }
       );
 
-      if (response.data.success) {
-        toast.success(response.data.message);
+      if (data.success) {
+        toast.success(data.message);
 
-        const newBannerId = response.data.homeBanner?._id;
-
-        if (newBannerId) {
-          navigate(`/home-banner/${newBannerId}`);
-        }
+        navigate(`/home-banner`);
       }
     } catch (error) {
-      console.error("Error saving banners:", error);
-      toast.error("Failed to save banners.");
+      console.error("Error adding home banner:", error);
+      toast.error("Failed to add home banner.");
     } finally {
       setLoading(false);
     }
-  }, [bannerTitle, banners]);
+  };
 
   return (
-    <div className="newHomeBanner">
-      {/* Top Section */}
-      <div className="newHomeBanner-top">
+    <div className="newPortfolio">
+      <div className="newPortfolio-top">
         <Link onClick={() => navigate(-1)} className="back-link">
           <h1>
-            <RiArrowLeftWideFill className="newHomeBanner-icon" />
+            <RiArrowLeftWideFill className="portfolio-icon" />
             New Home Banner
           </h1>
         </Link>
-
-        <div className="newHomeBanner-top-btns">
+        <div className="newPortfolio-top-btns">
           <button
-            onClick={handleSaveToDatabase}
-            className="save-btn"
             disabled={loading}
+            onClick={addPortfolio}
+            className="add-portfolio-btn"
           >
-            {loading ? "Adding Banners..." : "Add Banners"}
+            {loading ? "Adding home bannner..." : "Add home banner"}
           </button>
         </div>
       </div>
 
-      {/* Content Section */}
-      <div className="newHomeBanner-content">
-        {/* Banner Title Input */}
-        <div className="newHomeBanner-content-top">
-          <label htmlFor="bannerTitle">Banner Title:</label>
-          <input
-            id="bannerTitle"
-            type="text"
-            placeholder="Add Banner Title...."
-            value={bannerTitle}
-            onChange={(e) => setBannerTitle(e.target.value)}
-          />
+      <div className="newPortfolio-contents">
+        <div className="newPortfolio-contents-top">
+          <h1>Home Banner Image</h1>
         </div>
 
-        {/* Display Added Banners */}
-        <div className="added-banners">
-          {banners.map((banner, index) => (
-            <div key={index} className="banner-item">
-              <img src={banner.image} alt="Banner" className="banner-thumb" />
-              <div className="banner-details">
-                <h4>
-                  <span>Banner Image Title : </span>
-                  {banner.title}
-                </h4>
-                <p>
-                  <span>Banner Image Description : </span>
-                  {banner.desc}
-                </p>
-              </div>
-
-              <div className="added-banners-btn">
-                <button
-                  className="delete-btn"
-                  onClick={() => handleRemoveBanner(index)}
-                  aria-label="Delete Banner"
-                >
-                  <FaTrash />
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Banner Details Section */}
-        <div className="newHomeBanner-content-details">
-          <div className="newHomeBanner-content-details-card">
-            {/* Image Upload Section */}
+        <div className="newPortfolio-contents-card">
+          {selectedImage ? (
+            <img
+              src={selectedImage}
+              alt="Selected Portfolio"
+              className="portfolio-img"
+            />
+          ) : (
             <div
-              className={`newHomeBanner-content-details-left ${
-                image ? "bg-none" : ""
-              }`}
-              onClick={handleClick}
+              className="add-img-portfolio"
+              onClick={handleButtonClick}
               role="button"
               tabIndex={0}
-              aria-label="Upload Banner Image"
+              aria-label="Upload Portfolio Image"
             >
-              {image ? (
-                <img src={image} className="main-image" alt="Selected Banner" />
-              ) : (
-                <>
-                  <img src={addImg} alt="Add Banner" className="addimage" />
-                  <p>Add Banner Image</p>
-                </>
-              )}
-
-              {/* Hidden File Input */}
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/*"
-                style={{ display: "none" }}
-                onChange={handleImageChange}
+              <img
+                src={AddImg}
+                alt="Add Portfolio"
+                className="add-portfolio-img"
               />
+              <p>Add Home Banner Image</p>
             </div>
+          )}
 
-            {/* Right Side Inputs */}
-            <div className="newHomeBanner-content-details-right">
-              <div className="newHomeBanner-content-details-right-inputs">
-                <label htmlFor="imageTitle">Banner Image Title:</label>
-                <input
-                  id="imageTitle"
-                  type="text"
-                  placeholder="Add Banner Image Title..."
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                />
-              </div>
-
-              <div className="newHomeBanner-content-details-right-inputs desc-area">
-                <label htmlFor="imageDesc">Banner Image Description:</label>
-                <textarea
-                  id="imageDesc"
-                  className="text-area"
-                  placeholder="Add Banner Image Description..."
-                  value={desc}
-                  onChange={(e) => setDesc(e.target.value)}
-                />
-              </div>
-
-              <div className="banner-add-btn">
-                <button onClick={handleAddBanner} className="image-add-btn">
-                  <FaPlus className="add-icon" /> Add Banner Details
-                </button>
-              </div>
-            </div>
+          <div className="portfolio-btn">
+            <button onClick={handleButtonClick} className="add-image-btn">
+              <FaPlus className="change-icon" /> Add Image
+            </button>
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              style={{ display: "none" }}
+              accept="image/*"
+            />
           </div>
         </div>
       </div>

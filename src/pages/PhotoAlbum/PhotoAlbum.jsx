@@ -1,70 +1,86 @@
-import { homeBannerData } from "../../assets/data";
-import "./PhotoAlbum.scss";
-import Table from "../../components/Table/Table";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import "./PhotoAlbum.scss";
 
+import { Link } from "react-router-dom";
 import axios from "axios";
+
 import { baseUrl } from "../../main";
+import toast from "react-hot-toast";
 
 const PhotoAlbum = () => {
-  const [rowData, setRowData] = useState([]);
+  const [selectedImg, setSelectedImg] = useState(null);
+  const [allData, setAllData] = useState([]);
 
   useEffect(() => {
-    const fetchHomeBanners = async () => {
+    const fetchData = async () => {
       try {
         const { data } = await axios.get(
           `${baseUrl}/photoAlbum/all-photo-album`
         );
-        setRowData(
-          data.albums.map((item) => ({
-            id: item._id,
-            imageCount: item.images.length,
-            createdAt: new Date(item.createdAt).toLocaleDateString(),
-          }))
-        );
+        if (data && data.photoAlbum) {
+          setAllData(data.photoAlbum);
+        }
       } catch (error) {
-        console.error("Error fetching photo album:", error);
+        console.error("Error fetching home banners:", error);
       }
     };
 
-    fetchHomeBanners();
+    fetchData();
   }, []);
 
-  console.table(rowData);
+  const deleteImage = async (id) => {
+    if (!id) return;
 
-  const columnDefs = [
-    {
-      headerName: "ID",
-      field: "id",
-      flex: 1,
-      cellStyle: { textAlign: "center" },
-      headerClass: "header-center",
-    },
-    {
-      headerName: "Images Count",
-      field: "imageCount",
-      flex: 1,
-      cellStyle: { textAlign: "center" },
-      headerClass: "header-center",
-    },
-    {
-      headerName: "Created At",
-      field: "createdAt",
-      flex: 1,
-      cellStyle: { textAlign: "center" },
-      headerClass: "header-center",
-    },
-  ];
+    try {
+      const { data } = await axios.delete(`${baseUrl}/photoAlbum/${id}`);
+
+      if (data) {
+        toast.success(data.message);
+      }
+      setAllData((prev) => prev.filter((photoAlbum) => photoAlbum._id !== id));
+
+      toast.success(data.message);
+    } catch (error) {
+      console.error("Error deleting photoAlbum:", error);
+      toast.error("Failed to delete photoAlbum!");
+    }
+  };
+
   return (
-    <div className="photoAlbum">
-      <div className="photoAlbum-top">
-        <h1>Photo Album</h1>
+    <div className="portfolio">
+      <div className="portfolio-top">
+        <h1>Portfolio</h1>
         <Link to={"/new-photo-album"}>
           <button>Add New Photo Album</button>
         </Link>
       </div>
-      <Table rowData={rowData} columnDefs={columnDefs} tableLink="photoAlbum" />
+
+      <div className="portfolio-imgs">
+        {allData?.length > 0 &&
+          allData.map((item, index) => (
+            <div className="portfolio-img" key={index}>
+              <img src={item.image} alt="" />
+
+              <div className="portfolio-img-desc">
+                <button onClick={() => setSelectedImg(item.image)}>
+                  Full View
+                </button>
+                <button onClick={() => deleteImage(item._id)}>
+                  Delete Image
+                </button>
+              </div>
+            </div>
+          ))}
+      </div>
+
+      {selectedImg && (
+        <div className="image-modal" onClick={() => setSelectedImg(null)}>
+          <img src={selectedImg} alt="Fullscreen Preview" loading="lazy" />
+          <span className="close-btn" onClick={() => setSelectedImg(null)}>
+            ×
+          </span>
+        </div>
+      )}
     </div>
   );
 };

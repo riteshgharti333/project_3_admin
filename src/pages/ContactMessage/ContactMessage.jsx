@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import "./ContactMessage.scss";
-import { messages } from "../../assets/data";
 import Table from "../../components/Table/Table";
 import axios from "axios";
 

@@ -18,7 +18,7 @@ const AddingServices = ({ title, path }) => {
 
   const [loading, setLoading] = useState(false);
 
-  const [serviceName , setServiceName] = useState("");
+  const [serviceName, setServiceName] = useState("");
 
   const [deleteIndex, setDeleteIndex] = useState(null);
 
@@ -28,7 +28,6 @@ const AddingServices = ({ title, path }) => {
         const { data } = await axios.get(`${baseUrl}/services${path}`);
         setSingleData(data?.serviceImages?.images || []);
         setServiceName(data?.serviceImages?.serviceName);
-
       } catch (error) {
         console.error("Error fetching images:", error);
         toast.error("Failed to fetch images.");
@@ -37,78 +36,74 @@ const AddingServices = ({ title, path }) => {
     getSingleData();
   }, [path]);
 
-  // Handle image selection
   const handleImageChange = useCallback((event) => {
     const selectedFile = event.target.files[0];
     if (selectedFile) {
-      setImage(URL.createObjectURL(selectedFile)); // Set image preview
-      setFile(selectedFile); // Set file for upload
+      setImage(URL.createObjectURL(selectedFile));
+      setFile(selectedFile);
     }
   }, []);
 
-  // Trigger file input click
   const handleClick = useCallback(() => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
     }
   }, []);
 
-  // Add new photo to the Services state
   const handleAddPhoto = useCallback(() => {
     if (!file) {
       toast.error("Please add an image before submitting.");
       return;
     }
     const newPhoto = { image, file };
-    setServicesImage((prev) => [...prev, newPhoto]); // Add new photo
-    setImage(null); // Reset image preview
-    setFile(null); // Reset file
+    setServicesImage((prev) => [...prev, newPhoto]);
+    setImage(null);
+    setFile(null);
   }, [file, image]);
 
   // Remove photo from Services state
   const handleRemovePhoto = useCallback((index) => {
-    setServicesImage((prev) => prev.filter((_, i) => i !== index)); // Remove photo by index
+    setServicesImage((prev) => prev.filter((_, i) => i !== index));
   }, []);
 
+  // update
   const handleUpdate = async () => {
     if (serviceImages.length === 0 && singleData.length === 0) {
       toast.error("No images selected for update.");
       return;
     }
-
+  
     setLoading(true);
-
+  
     try {
-      // Upload new images to Cloudinary
-      const uploadedImages = await Promise.all(
-        serviceImages.map(async (photo) => {
-          const formData = new FormData();
-          formData.append("file", photo.file);
-          formData.append("upload_preset", "tk-site");
-          formData.append("cloud_name", "ddmucrojh");
-          formData.append("folder", "tk-production-images/services");
-
-          const { data } = await axios.post(
-            `https://api.cloudinary.com/v1_1/ddmucrojh/image/upload`,
-            formData
-          );
-
-          return data.secure_url;
-        })
-      );
-
-      // Combine existing and newly uploaded images
-      const updatedImages = [...singleData, ...uploadedImages];
-
-      // ✅ Add a default serviceName if missing
-      const response = await axios.put(`${baseUrl}/services${path}`, {
-        serviceName: serviceName,
-        images: updatedImages,
+      const formData = new FormData();
+  
+      // ✅ Append new images
+      serviceImages.forEach((photo) => {
+        formData.append("images", photo.file);
       });
-
+  
+      // ✅ Append only the images you want to keep
+      singleData.forEach((imageUrl) => {
+        formData.append("images", imageUrl);  
+      });
+  
+      // ✅ Append the service name
+      formData.append("serviceName", serviceName);
+  
+      const response = await axios.put(
+        `${baseUrl}/services/${path}`,
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+  
       if (response?.data?.success) {
         toast.success(response.data.message);
         setServicesImage([]);
+        
+        // ✅ Refetch updated images
         const { data } = await axios.get(`${baseUrl}/services${path}`);
         setSingleData(data.serviceImages.images);
       }
@@ -119,6 +114,7 @@ const AddingServices = ({ title, path }) => {
       setLoading(false);
     }
   };
+  
 
   const handleDelete = (index) => {
     const serviceImagesDetails = singleData.filter((_, i) => i !== index);

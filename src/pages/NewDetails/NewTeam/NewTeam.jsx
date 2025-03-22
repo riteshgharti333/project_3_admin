@@ -33,26 +33,6 @@ const NewTeam = () => {
     fileInputRef.current.click();
   };
 
-  const uploadToCloudinary = async (file) => {
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", "tk-site");
-    formData.append("cloud_name", "ddmucrojh");
-    formData.append("folder", "tk-production-images/team");
-
-    try {
-      const { data } = await axios.post(
-        `https://api.cloudinary.com/v1_1/ddmucrojh/image/upload`,
-        formData
-      );
-      return data.secure_url; 
-    } catch (error) {
-      console.error("Cloudinary upload failed:", error);
-      toast.error("Image upload failed.");
-      return null;
-    }
-  };
-
   const addTeamMember = async () => {
     if (!file || !title || !name) {
       toast.error("Please fill all fields and select an image.");
@@ -62,14 +42,13 @@ const NewTeam = () => {
     setLoading(true);
 
     try {
-      // 1. Upload to Cloudinary
-      const imageUrl = await uploadToCloudinary(file);
-      if (!imageUrl) return;
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("title", title);
+      formData.append("image", file);
 
-      const { data } = await axios.post(`${baseUrl}/team/new-team`, {
-        title,
-        name,
-        image: imageUrl,
+      const { data } = await axios.post(`${baseUrl}/team/new-team`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
       });
 
       if (data.success) {

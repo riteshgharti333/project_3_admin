@@ -11,7 +11,6 @@ import Register from "./pages/Register/Register";
 
 // Single
 import SingleHomeBanner from "./pages/SingleDetail/SingleHomeBanner/SingleHomeBanner";
-import SinglePortfolio from "./pages/SingleDetail/SinglePortfolio/SinglePortfolio";
 import SingleTeams from "./pages/SingleDetail/SingleTeams/SingleTeams";
 import SingleContact from "./pages/SingleDetail/SingleContact/SingleContact";
 
@@ -84,8 +83,6 @@ function App() {
               element={<UpdateSingleHomeBanner />}
             />
             <Route path="/new-home-banner" element={<NewHomeBanner />} />
-
-            <Route path="/portfolio/:id" element={<SinglePortfolio />} />
             <Route
               path="/update-portfolio/:id"
               element={<UpdateSinglePorfolio />}

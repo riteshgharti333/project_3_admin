@@ -17,7 +17,7 @@ const SingleTeams = () => {
       try {
         const { data } = await axios.get(`${baseUrl}/team/${id}`);
         setSingleData(data?.team);
-        console.log(data)
+        console.log(data);
       } catch (error) {
         console.error("Error fetching single data:", error);
       }
@@ -30,7 +30,7 @@ const SingleTeams = () => {
     try {
       const { data } = await axios.delete(`${baseUrl}/team/${id}`);
       toast.success(data.message);
-      navigate(-1);
+      navigate("/teams");
     } catch (error) {
       console.log(error);
     }

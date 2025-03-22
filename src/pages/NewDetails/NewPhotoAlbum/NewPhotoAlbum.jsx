@@ -1,178 +1,126 @@
 import "./NewPhotoAlbum.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { RiArrowLeftWideFill } from "react-icons/ri";
-import { FaPlus, FaTrash } from "react-icons/fa6";
-import { useState, useRef, useCallback } from "react";
-import addImg from "../../../assets/images/addImg.svg";
+import { FaPlus } from "react-icons/fa6";
+import { useRef, useState } from "react";
+import AddImg from "../../../assets/images/addImg.svg";
+import axios from "axios";
 import { baseUrl } from "../../../main";
 import toast from "react-hot-toast";
-import axios from "axios";
 
 const NewPhotoAlbum = () => {
-  const [image, setImage] = useState(null);
-  const [file, setFile] = useState(null);
-  const [photoAlbums, setPhotoAlbums] = useState([]);
   const fileInputRef = useRef(null);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [file, setFile] = useState(null);
   const navigate = useNavigate();
+
   const [loading, setLoading] = useState(false);
 
-  // Handle image selection
-  const handleImageChange = useCallback((event) => {
-    const selectedFile = event.target.files[0];
-    if (selectedFile) {
-      setImage(URL.createObjectURL(selectedFile));
-      setFile(selectedFile);
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      setSelectedImage(imageUrl);
+      setFile(file);
     }
-  }, []);
+  };
 
-  // Open file input
-  const handleClick = useCallback(() => {
+  const handleButtonClick = () => {
     fileInputRef.current.click();
-  }, []);
+  };
 
-  // Add photo album image without uploading
-  const handleAddPhoto = useCallback(() => {
+  const addPortfolio = async () => {
     if (!file) {
-      toast.error("Please add images before adding.");
-      return;
-    }
-
-    const newPhoto = { image, file };
-    setPhotoAlbums((prev) => [...prev, newPhoto]);
-    setImage(null);
-    setFile(null);
-  }, [file, image]);
-
-  // Remove photo from album
-  const handleRemovePhoto = useCallback((index) => {
-    setPhotoAlbums((prev) => prev.filter((_, i) => i !== index));
-  }, []);
-
-  // Upload all images to Cloudinary & save to database
-  const handleSaveToDatabase = useCallback(async () => {
-    if (photoAlbums.length === 0) {
-      toast.error("Please add at least one photo before saving.");
+      toast.error("Please select an image.");
       return;
     }
 
     setLoading(true);
 
     try {
-      const uploadedPhotos = await Promise.all(
-        photoAlbums.map(async (photo) => {
-          const formData = new FormData();
-          formData.append("file", photo.file);
-          formData.append("upload_preset", "tk-site");
-          formData.append("cloud_name", "ddmucrojh");
-          formData.append("folder", "tk-production-images/photoAlbum");
+      const formData = new FormData();
+      formData.append("image", file);
 
-          const { data } = await axios.post(
-            `https://api.cloudinary.com/v1_1/ddmucrojh/image/upload`,
-            formData
-          );
-
-          return data.secure_url;
-        })
-      );
-
-      // Save to database
-      const response = await axios.post(
+      const { data } = await axios.post(
         `${baseUrl}/photoAlbum/new-photo-album`,
+        formData,
         {
-          images: uploadedPhotos,
+          headers: { "Content-Type": "multipart/form-data" },
         }
       );
 
-      if (response.data.success) {
-        toast.success(response.data.message);
-        const newAlbumId = response.data.album._id;
-        if (newAlbumId) {
-          navigate(`/photoAlbum/${newAlbumId}`);
-        }
+      if (data.success) {
+        toast.success(data.message);
+        navigate(`/photo-album`);
       }
     } catch (error) {
-      console.error("Error saving photo album:", error);
-      toast.error("Failed to save photo album.");
+      console.error("Error adding photo album:", error);
+      toast.error("Failed to add photo album.");
     } finally {
       setLoading(false);
     }
-  }, [photoAlbums, navigate]);
+  };
 
   return (
-    <div className="newPhotoAlbum">
-      {/* Top Section */}
-      <div className="newPhotoAlbum-top">
+    <div className="newPortfolio">
+      <div className="newPortfolio-top">
         <Link onClick={() => navigate(-1)} className="back-link">
           <h1>
-            <RiArrowLeftWideFill className="newPhotoAlbum-icon" />
+            <RiArrowLeftWideFill className="portfolio-icon" />
             New Photo Album
           </h1>
         </Link>
-        <div className="newPhotoAlbum-top-btns">
+        <div className="newPortfolio-top-btns">
           <button
-            onClick={handleSaveToDatabase}
-            className="save-btn"
             disabled={loading}
+            onClick={addPortfolio}
+            className="add-portfolio-btn"
           >
-            {loading ? "Saving Album Images..." : "Save Album Images"}
+            {loading ? "Adding photo album..." : "Add photo album"}
           </button>
         </div>
       </div>
 
-      {/* Content Section */}
-      <div className="newPhotoAlbum-content">
-        {/* Display Added Photos */}
-        <div className="added-photos">
-          {photoAlbums.map((photo, index) => (
-            <div key={index} className="photo-item">
-              <img src={photo.image} alt="Photo" className="photo-thumb" />
-              <div className="added-photos-btn">
-                <button
-                  className="delete-btn"
-                  onClick={() => handleRemovePhoto(index)}
-                  aria-label="Delete Photo"
-                >
-                  <FaTrash />
-                </button>
-              </div>
-            </div>
-          ))}
+      <div className="newPortfolio-contents">
+        <div className="newPortfolio-contents-top">
+          <h1>Photo Album Image</h1>
         </div>
 
-        {/* Photo Upload Section */}
-        <div className="newPhotoAlbum-content-details">
-          <div className="newPhotoAlbum-content-details-card">
+        <div className="newPortfolio-contents-card">
+          {selectedImage ? (
+            <img
+              src={selectedImage}
+              alt="Selected Portfolio"
+              className="portfolio-img"
+            />
+          ) : (
             <div
-              className={`newPhotoAlbum-content-details-left ${
-                image ? "bg-none" : ""
-              }`}
-              onClick={handleClick}
+              className="add-img-portfolio"
+              onClick={handleButtonClick}
               role="button"
               tabIndex={0}
-              aria-label="Upload Photo"
+              aria-label="Upload Portfolio Image"
             >
-              {image ? (
-                <img src={image} className="main-image" alt="Selected Photo" />
-              ) : (
-                <>
-                  <img src={addImg} alt="Add Photo" className="addimage" />
-                  <p>Add Photo</p>
-                </>
-              )}
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/*"
-                style={{ display: "none" }}
-                onChange={handleImageChange}
+              <img
+                src={AddImg}
+                alt="Add Portfolio"
+                className="add-portfolio-img"
               />
+              <p>Add PhotoAlbum Image</p>
             </div>
+          )}
 
-            <div className="photo-add-btn">
-              <button onClick={handleAddPhoto} className="image-add-btn">
-                <FaPlus className="add-icon" /> Add Images
-              </button>
-            </div>
+          <div className="portfolio-btn">
+            <button onClick={handleButtonClick} className="add-image-btn">
+              <FaPlus className="change-icon" /> Add Image
+            </button>
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              style={{ display: "none" }}
+              accept="image/*"
+            />
           </div>
         </div>
       </div>

@@ -42,39 +42,15 @@ const UpdateSingleTeams = () => {
     fileInputRef.current.click();
   };
 
-  const uploadToCloudinary = async (file) => {
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", "tk-site");
-    formData.append("cloud_name", "ddmucrojh");
-    formData.append("folder", "tk-production-images/team");
-
-    try {
-      const { data } = await axios.post(
-        `https://api.cloudinary.com/v1_1/ddmucrojh/image/upload`,
-        formData
-      );
-      return data.secure_url;
-    } catch (error) {
-      console.error("Cloudinary upload failed:", error);
-      toast.error("Image upload failed.");
-      return null;
-    }
-  };
-
-  const handleFileChange = async (event) => {
+  const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (!file) return;
 
-    // Show temporary preview
-    const previewUrl = URL.createObjectURL(file);
-    setFormData((prev) => ({ ...prev, image: previewUrl }));
-
-    // Upload to Cloudinary
-    const uploadedImageUrl = await uploadToCloudinary(file);
-    if (uploadedImageUrl) {
-      setFormData((prev) => ({ ...prev, image: uploadedImageUrl }));
-    }
+    setFormData((prev) => ({
+      ...prev,
+      image: URL.createObjectURL(file),
+      file: file,
+    }));
   };
 
   const handleChange = (e) => {
@@ -83,28 +59,42 @@ const UpdateSingleTeams = () => {
 
   const handleUpdate = async () => {
     if (!formData.title.trim()) {
-      toast.error("You can't update the portfolio without title");
+      toast.error("You can't update the team member without a title");
       return;
     }
 
     if (!formData.name.trim()) {
-      toast.error("You can't update the portfolio without name");
+      toast.error("You can't update the team member without a name");
       return;
     }
 
     setLoading(true);
 
     try {
-      const { data } = await axios.put(`${baseUrl}/team/${id}`, formData);
+      const updatedFormData = new FormData();
+      updatedFormData.append("title", formData.title);
+      updatedFormData.append("name", formData.name);
+
+      // ✅ Append the image file only if it exists
+      if (formData.file) {
+        updatedFormData.append("image", formData.file);
+      }
+
+      const { data } = await axios.put(
+        `${baseUrl}/team/${id}`,
+        updatedFormData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
 
       if (data.success) {
         toast.success(data.message);
+        navigate(-1);
       }
-
-      navigate(-1);
     } catch (error) {
-      console.error("Error updating portfolio:", error);
-      toast.error("Failed to update portfolio.");
+      console.error("Error updating team member:", error);
+      toast.error("Failed to update team member.");
     } finally {
       setLoading(false);
     }

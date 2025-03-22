@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import "./Teams.scss";
 
-import { teams } from "../../assets/data";
 import Table from "../../components/Table/Table";
 
 import { Link } from "react-router-dom";

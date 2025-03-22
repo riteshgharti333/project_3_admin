@@ -11,8 +11,6 @@ import toast from "react-hot-toast";
 const NewPortfolio = () => {
   const fileInputRef = useRef(null);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [title, setTitle] = useState("");
-  const [name, setName] = useState("");
   const [file, setFile] = useState(null);
   const navigate = useNavigate();
 
@@ -31,53 +29,32 @@ const NewPortfolio = () => {
     fileInputRef.current.click();
   };
 
-  const uploadToCloudinary = async (file) => {
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", "tk-site");
-    formData.append("cloud_name", "ddmucrojh");
-    formData.append("folder", "tk-production-images/portfolio");
-
-    try {
-      const { data } = await axios.post(
-        `https://api.cloudinary.com/v1_1/ddmucrojh/image/upload`,
-        formData
-      );
-      return data.secure_url; // Return the uploaded image URL
-    } catch (error) {
-      console.error("Cloudinary upload failed:", error);
-      toast.error("Image upload failed.");
-      return null;
-    }
-  };
-
   const addPortfolio = async () => {
-    if (!file || !title || !name) {
-      toast.error("Please fill all fields and select an image.");
+    if (!file) {
+      toast.error("Please select an image.");
       return;
     }
 
     setLoading(true);
 
     try {
-      // 1. Upload to Cloudinary
-      const imageUrl = await uploadToCloudinary(file);
-      if (!imageUrl) return;
+      const formData = new FormData();
+      formData.append("image", file);
 
-      // 2. Send data to backend
-      const { data } = await axios.post(`${baseUrl}/portfolio/new-portfolio`, {
-        title,
-        name,
-        image: imageUrl,
-      });
+      const { data } = await axios.post(
+        `${baseUrl}/portfolio/new-portfolio`,
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
 
       if (data.success) {
         toast.success(data.message);
-
         const portfolioId = data.portfolio?._id;
 
         if (portfolioId) {
-          navigate(`/portfolio/${portfolioId}`);
+          navigate(`/portfolio`);
         }
       }
     } catch (error) {
@@ -148,28 +125,6 @@ const NewPortfolio = () => {
               style={{ display: "none" }}
               accept="image/*"
             />
-          </div>
-
-          <div className="newPortfolio-contents-card-desc">
-            <div className="update-content">
-              <span>Title: </span>
-              <input
-                type="text"
-                placeholder="Enter title..."
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-              />
-            </div>
-
-            <div className="update-content">
-              <span>Name: </span>
-              <input
-                type="text"
-                placeholder="Enter name..."
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </div>
           </div>
         </div>
       </div>
