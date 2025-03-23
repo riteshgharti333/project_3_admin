@@ -23,12 +23,11 @@ const Table = ({ rowData, columnDefs, tableLink }) => {
       navigate(`/contact/${id}`);
     } else if (tableLink === "contact-2") {
       navigate(`/contact-2/${id}`);
-    }
-
-    else if (tableLink === "photoAlbum") {
+    } else if (tableLink === "photoAlbum") {
       navigate(`/photoAlbum/${id}`);
+    } else if (tableLink === "review") {
+      navigate(`/review/${id}`);
     }
-
   };
 
   return (

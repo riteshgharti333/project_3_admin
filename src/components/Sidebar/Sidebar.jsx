@@ -13,8 +13,10 @@ import { IoAlbumsOutline } from "react-icons/io5";
 import { RiArrowRightSLine } from "react-icons/ri";
 import { motion } from "framer-motion";
 import { AiOutlineMobile } from "react-icons/ai";
+import { VscPreview } from "react-icons/vsc";
 
 import { baseUrl } from "../../main";
+import { IoVideocamOutline } from "react-icons/io5";
 
 import axios from "axios";
 import { toast } from "react-hot-toast";
@@ -48,11 +50,26 @@ const Sidebar = () => {
     { path: "/photo-album", icon: <IoAlbumsOutline />, label: "Photo Album" },
     { path: "/portfolio", icon: <FaRegImage />, label: "Portfolio" },
     { path: "/teams", icon: <GrGroup />, label: "Teams" },
+    { path: "/reviews", icon: <VscPreview />, label: "Reviews" },
+
     { path: "/messages", icon: <GrContact />, label: "Contact Messages" },
+
     {
       path: "/contact-2-messages",
       icon: <GrContact />,
       label: "Contact 2 Messages",
+    },
+
+    {
+      path: "/wedding-cinematography-videos",
+      icon: <IoVideocamOutline size={17} />,
+      label: "Wedding Cinematography",
+    },
+
+    {
+      path: "/pre-wedding-film-videos",
+      icon: <IoVideocamOutline />,
+      label: "Pre Wedding Film",
     },
   ];
 

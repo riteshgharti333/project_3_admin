@@ -9,8 +9,8 @@ export const services = [
   },
 
   {
-    service_name: "Pre-Wedding Films",
-    link: "/pre-wedding-films",
+    service_name: "Pre-Wedding Film",
+    link: "/pre-wedding-film",
   },
 
   {

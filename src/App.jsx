@@ -47,6 +47,13 @@ import Service8 from "./pages/Services/Service8/Service8";
 import Service9 from "./pages/Services/Service9/Service9";
 import MobileBanner from "./pages/MobileBanner/MobileBanner";
 import NewMobileBanner from "./pages/NewDetails/NewMobileBanner/NewMobileBanner";
+import Review from "./pages/Review/Review";
+import SingleReview from "./pages/SingleDetail/SingleReview/SingleReview";
+import NewReview from "./pages/NewDetails/NewReview/NewReview";
+import Video1 from "./pages/Video/Video1";
+import NewVideo1 from "./pages/NewDetails/NewVideo/NewVideo1";
+import Video2 from "./pages/Video/Video2";
+import NewVideo2 from "./pages/NewDetails/NewVideo/NewVide2";
 
 function App() {
   const { user } = useContext(Context);
@@ -77,6 +84,7 @@ function App() {
             <Route path="/messages" element={<ContactMessage />} />
             <Route path="/contact-2-messages" element={<Contact2Message />} />
             <Route path="/photo-album" element={<PhotoAlbum />} />
+            <Route path="/reviews" element={<Review />} />
 
             <Route path="/new-mobile-banner" element={<NewMobileBanner />} />
 
@@ -97,6 +105,17 @@ function App() {
             <Route path="/new-portfolio" element={<NewPortfolio />} />
 
             <Route path="/team/:id" element={<SingleTeams />} />
+            <Route path="/review/:id" element={<SingleReview />} />
+
+            <Route path="/wedding-cinematography-videos" element={<Video1 />} />
+            <Route
+              path="/wedding-cinematography/new-video"
+              element={<NewVideo1 />}
+            />
+
+            <Route path="/pre-wedding-film-videos" element={<Video2 />} />
+            <Route path="/pre-wedding-film/new-video" element={<NewVideo2 />} />
+
             <Route
               path="/update-team-member/:id"
               element={<UpdateSingleTeams />}
@@ -115,11 +134,12 @@ function App() {
               element={<UpdatePhotoAlbum />}
             />
             <Route path="/new-photo-album" element={<NewPhotoAlbum />} />
+            <Route path="/new-review" element={<NewReview />} />
 
             {/* Services */}
             <Route path="/wedding-photography/:id" element={<Service1 />} />
             <Route path="/wedding-cinematography/:id" element={<Service2 />} />
-            <Route path="/pre-wedding-films/:id" element={<Service3 />} />
+            <Route path="/pre-wedding-film/:id" element={<Service3 />} />
             <Route path="/pre-wedding-photography/:id" element={<Service4 />} />
             <Route
               path="/civil-marriage-photography/:id"
