@@ -38,7 +38,14 @@ const AddingServices = ({ title, path }) => {
 
   const handleImageChange = useCallback((event) => {
     const selectedFile = event.target.files[0];
+    const maxSize = 300 * 1024; 
+  
     if (selectedFile) {
+      if (selectedFile.size > maxSize) {
+        toast.error("Image size should be less than 300 KB");
+        return;
+      }
+  
       setImage(URL.createObjectURL(selectedFile));
       setFile(selectedFile);
     }

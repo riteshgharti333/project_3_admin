@@ -23,6 +23,13 @@ const NewReview = () => {
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
+      const maxSize = 200 * 1024;
+
+      if (file.size > maxSize) {
+        toast.error("Image size should be less than 200 KB");
+        return;
+      }
+
       const imageUrl = URL.createObjectURL(file);
       setSelectedImage(imageUrl);
       setFile(file);

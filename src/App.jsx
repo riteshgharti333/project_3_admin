@@ -67,10 +67,10 @@ function App() {
             path="/login"
             element={user ? <Navigate to="/" /> : <Login />}
           />
-          <Route
+          {/* <Route
             path="/signup"
             element={user ? <Navigate to="/" /> : <Register />}
-          />
+          /> */}
 
           {/* Protected Routes */}
 

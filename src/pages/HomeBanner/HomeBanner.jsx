@@ -10,12 +10,14 @@ import toast from "react-hot-toast";
 const HomeBanner = () => {
   const [selectedImg, setSelectedImg] = useState(null);
   const [allData, setAllData] = useState([]);
-  
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await axios.get(`${baseUrl}/home-banner/all-home-banners`);
-        console.log(data)
+        const { data } = await axios.get(
+          `${baseUrl}/home-banner/all-home-banners`
+        );
+        console.log(data);
         if (data && data.homeBanner) {
           setAllData(data.homeBanner);
         }
