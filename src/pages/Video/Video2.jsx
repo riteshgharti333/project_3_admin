@@ -1,12 +1,11 @@
-import { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
+import { baseUrl } from "../../main";
 import "./Video.scss";
 
-import { Link } from "react-router-dom";
-import axios from "axios";
-import { baseUrl } from "../../main";
-import toast from "react-hot-toast";
-
-const Video2 = () => {
+const Video1 = () => {
   const [allData, setAllData] = useState([]);
 
   useEffect(() => {
@@ -22,22 +21,19 @@ const Video2 = () => {
         console.error("Error fetching videos:", error);
       }
     };
-
     fetchData();
   }, []);
 
   const deleteVideo = async (id) => {
     if (!id) return;
-
     try {
-      const { data } = await axios.delete(`${baseUrl}/pre-wedding-film/${id}`);
-
+      const { data } = await axios.delete(
+        `${baseUrl}/pre-wedding-film/${id}`
+      );
       if (data) {
         toast.success(data.message);
       }
       setAllData((prev) => prev.filter((video) => video._id !== id));
-
-      toast.success(data.message);
     } catch (error) {
       console.error("Error deleting video:", error);
       toast.error("Failed to delete video!");
@@ -46,44 +42,79 @@ const Video2 = () => {
 
   const getYouTubeThumbnail = (link) => {
     let videoId = "";
-
     if (link.includes("youtu.be/")) {
       videoId = link.split("youtu.be/")[1].split("?")[0];
     } else if (link.includes("youtube.com/watch?v=")) {
       videoId = link.split("v=")[1].split("&")[0];
     }
-
     return `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+  };
+
+  const handleDragStart = (e, index) => {
+    e.dataTransfer.setData("draggedIndex", index);
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = async (e, index) => {
+    const draggedIndex = e.dataTransfer.getData("draggedIndex");
+    const newData = [...allData];
+    const [draggedItem] = newData.splice(draggedIndex, 1);
+    newData.splice(index, 0, draggedItem);
+
+    // Update the state with the new order
+    setAllData(newData);
+
+    // Create an array of ordered video IDs
+    const orderedIds = newData.map((item) => item._id);
+
+    // Send the updated order to the backend
+    try {
+      const response = await axios.put(
+        `${baseUrl}/pre-wedding-film/reorder`,
+        { orderedIds }
+      );
+      if (response.data.success) {
+        toast.success(response.data.message);
+      }
+    } catch (error) {
+      console.error("Error updating video order:", error);
+      toast.error("Failed to update video order!");
+    }
   };
 
   return (
     <div className="video">
       <div className="video-top">
-        <h1>Pre Wedding Film Videos</h1>
+        <h1>Wedding Cinematography Videos</h1>
         <Link to={"/pre-wedding-film/new-video"}>
           <button>Add New Video</button>
         </Link>
       </div>
 
       <div className="video-imgs">
-        {allData?.length > 0 &&
-          allData.map((item, index) => (
-            <div className="video-img" key={index}>
-              <img
-                src={getYouTubeThumbnail(item.link)}
-                alt="YouTube Thumbnail"
-              />
-
-              <div className="video-img-desc">
-                <button onClick={() => deleteVideo(item._id)}>
-                  Delete Video
-                </button>
-              </div>
+        {allData?.map((item, index) => (
+          <div
+            key={item._id}
+            className="video-img"
+            draggable
+            onDragStart={(e) => handleDragStart(e, index)}
+            onDragOver={handleDragOver}
+            onDrop={(e) => handleDrop(e, index)}
+          >
+            <img src={getYouTubeThumbnail(item.link)} alt="YouTube Thumbnail" />
+            <div className="video-img-desc">
+              <button onClick={() => deleteVideo(item._id)}>
+                Delete Video
+              </button>
             </div>
-          ))}
+          </div>
+        ))}
       </div>
     </div>
   );
 };
 
-export default Video2;
+export default Video1;

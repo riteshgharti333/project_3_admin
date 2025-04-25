@@ -14,10 +14,18 @@ const SingleContact2 = () => {
 
   const [eventDetails, setEventDetails] = useState({});
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const options = { day: 'numeric', month: 'short', year: 'numeric' };
+    return date.toLocaleDateString('en-GB', options); // "2 Jan 2023"
+  };
+  
+
   useEffect(() => {
     const fetchSingleData = async () => {
       try {
         const { data } = await axios.get(`${baseUrl}/contact2/contact-2/${id}`);
+        console.log(data);
         setSingleData(data?.contact);
         setEventDetails(data?.contact?.eventDetail);
       } catch (error) {
@@ -76,36 +84,35 @@ const SingleContact2 = () => {
         </div>
 
         <div className="singleContact-content-desc">
-          <p>Country : </p>
-          <p>{singleData.country}</p>
+          <p>Location : </p>
+          <p>{singleData.location}</p>
         </div>
 
         <div className="singleContact-content-desc">
-          <p>How Did You Hear About Us? :</p>
-          <p>{singleData.howDidYouHearAboutUs}</p>
+          <p>Event Date : </p>
+          <p>{formatDate(singleData.eventDate)}</p>
         </div>
-        <div className="event">
-          <p>Event Details : </p>
-          <div className="singleContact-content-desc-bottom">
-            <ul>
-              <li>
-                Date:<span>{eventDetails?.date}</span>
-              </li>
-              <li>
-                Time : <span>{eventDetails?.time}</span>
-              </li>
-              <li>
-                Venue Address:<span>{eventDetails?.venueAddress}</span>
-              </li>
-              <li>
-                Number of Guests:<span>{eventDetails?.numberOfGuests}</span>
-              </li>
-              <li>
-                Additional Requirements:
-                <span>{eventDetails?.additionalRequirements}</span>
-              </li>
-            </ul>
-          </div>
+
+        <div className="singleContact-content-desc">
+          <p>Services Needed : </p>
+          {singleData?.servicesNeeded?.map((item, index) => (
+            <p>{item},</p>
+          ))}
+        </div>
+
+        <div className="singleContact-content-desc">
+          <p>Wedding Type : </p>
+          <p>{singleData.weddingType}</p>
+        </div>
+
+        <div className="singleContact-content-desc">
+          <p>How Did You Hear? : </p>
+          <p>{singleData.howDidYouHear}</p>
+        </div>
+
+        <div className="singleContact-content-desc">
+          <p>Message : </p>
+          <p>{singleData.message}</p>
         </div>
       </div>
     </div>
