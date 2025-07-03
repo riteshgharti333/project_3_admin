@@ -24,7 +24,7 @@ import NewHomeBanner from "./pages/NewDetails/NewHomeBanner/NewHomeBanner";
 import NewPortfolio from "./pages/NewDetails/NewPortfolio/NewPortfolio";
 import NewTeam from "./pages/NewDetails/NewTeam/NewTeam";
 
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import Contact2Message from "./pages/Contact2Message/Contact2Message";
 import SingleContact2 from "./pages/SingleDetail/SingleContact2/SingleContact2";
 import { Context } from "./context/Context";
@@ -58,15 +58,23 @@ import NewVideo2 from "./pages/NewDetails/NewVideo/NewVide2";
 function App() {
   const { user } = useContext(Context);
 
+  const shown = new Set();
+  const originalToastError = toast.error;
+
+  toast.error = (message, opts = {}) => {
+    const key = typeof message === "string" ? message : JSON.stringify(message);
+    if (shown.has(key)) return;
+    shown.add(key);
+    originalToastError(message, opts);
+    setTimeout(() => shown.delete(key), 2000);
+  };
+
   return (
     <div className="app">
       <BrowserRouter>
         <Routes>
           {/* Public Routes */}
-          <Route
-            path="/login"
-            element={user ? <Navigate to="/" /> : <Login />}
-          />
+          <Route path="/login" element={<Login />} />
           {/* <Route
             path="/signup"
             element={user ? <Navigate to="/" /> : <Register />}
@@ -74,7 +82,7 @@ function App() {
 
           {/* Protected Routes */}
 
-          <Route element={user ? <Layout /> : <Navigate to="/login" />}>
+          <Route element={<Layout />}>
             <Route path="/" element={<Dashboard />} />
             <Route path="/home-banner" element={<HomeBanner />} />
             <Route path="/mobile-banner" element={<MobileBanner />} />
@@ -165,7 +173,7 @@ function App() {
             className: "",
             style: {
               fontFamily: "Sora, serif",
-              fontSize: "18px",
+              fontSize: "16px",
               fontWeight: "600",
             },
           }}

@@ -32,7 +32,9 @@ const MobileBanner = () => {
     if (!id) return;
 
     try {
-      const { data } = await axios.delete(`${baseUrl}/mobile/${id}`);
+      const { data } = await axios.delete(`${baseUrl}/mobile/${id}`, {
+        withCredentials: true,
+      });
 
       if (data) {
         toast.success(data.message);
@@ -42,7 +44,7 @@ const MobileBanner = () => {
       toast.success(data.message);
     } catch (error) {
       console.error("Error deleting home banner:", error);
-      toast.error("Failed to delete home banner!");
+      toast.error(error.response.data.message);
     }
   };
 

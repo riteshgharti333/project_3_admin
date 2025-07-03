@@ -32,7 +32,9 @@ const PhotoAlbum = () => {
     if (!id) return;
 
     try {
-      const { data } = await axios.delete(`${baseUrl}/photoAlbum/${id}`);
+      const { data } = await axios.delete(`${baseUrl}/photoAlbum/${id}`,{
+          withCredentials: true,
+        });
 
       if (data) {
         toast.success(data.message);
@@ -42,14 +44,14 @@ const PhotoAlbum = () => {
       toast.success(data.message);
     } catch (error) {
       console.error("Error deleting photoAlbum:", error);
-      toast.error("Failed to delete photoAlbum!");
+      toast.error(error.response.data.message);
     }
   };
 
   return (
     <div className="portfolio">
       <div className="portfolio-top">
-        <h1>Portfolio</h1>
+        <h1>Photo Album</h1>
         <Link to={"/new-photo-album"}>
           <button>Add New Photo Album</button>
         </Link>

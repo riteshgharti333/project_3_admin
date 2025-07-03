@@ -30,7 +30,9 @@ const Portfolio = () => {
     if (!id) return;
 
     try {
-      const { data } = await axios.delete(`${baseUrl}/portfolio/${id}`);
+      const { data } = await axios.delete(`${baseUrl}/portfolio/${id}`, {
+        withCredentials: true,
+      });
 
       if (data) {
         toast.success(data.message);
@@ -40,7 +42,7 @@ const Portfolio = () => {
       toast.success(data.message);
     } catch (error) {
       console.error("Error deleting porfolio:", error);
-      toast.error("Failed to delete portfolio!");
+      toast.error(error.response.data.message);
     }
   };
 

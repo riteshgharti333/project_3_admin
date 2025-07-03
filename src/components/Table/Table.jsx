@@ -11,20 +11,13 @@ const Table = ({ rowData, columnDefs, tableLink }) => {
   const handleRowClick = (event) => {
     const id = event.data.id;
     const bannertitle = event.data.bannerTitle;
-    // navigate(`/home-banner/${bannerId}`);
 
-    if (tableLink === "homeBanner") {
-      navigate(`/home-banner/${id}`);
-    } else if (tableLink === "portfolio") {
-      navigate(`/portfolio/${id}`);
-    } else if (tableLink === "teams") {
+    if (tableLink === "teams") {
       navigate(`/team/${id}`);
     } else if (tableLink === "contact") {
       navigate(`/contact/${id}`);
     } else if (tableLink === "contact-2") {
       navigate(`/contact-2/${id}`);
-    } else if (tableLink === "photoAlbum") {
-      navigate(`/photoAlbum/${id}`);
     } else if (tableLink === "review") {
       navigate(`/review/${id}`);
     }

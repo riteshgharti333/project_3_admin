@@ -31,7 +31,7 @@ const UpdateSingleTeams = () => {
           image: data?.team?.image || portfolio_img,
         });
       } catch (error) {
-        console.error("Error fetching single portfolio:", error);
+        console.error("Error updating team:", error);
       }
     };
 
@@ -84,6 +84,9 @@ const UpdateSingleTeams = () => {
         `${baseUrl}/team/${id}`,
         updatedFormData,
         {
+          withCredentials: true,
+        },
+        {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
@@ -94,7 +97,7 @@ const UpdateSingleTeams = () => {
       }
     } catch (error) {
       console.error("Error updating team member:", error);
-      toast.error("Failed to update team member.");
+      toast.error(error.response.data.message);
     } finally {
       setLoading(false);
     }

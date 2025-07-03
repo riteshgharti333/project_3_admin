@@ -58,6 +58,9 @@ const NewReview = () => {
         `${baseUrl}/review/new-review`,
         formData,
         {
+          withCredentials: true,
+        },
+        {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
@@ -73,7 +76,7 @@ const NewReview = () => {
       }
     } catch (error) {
       console.error("Error adding reiew:", error);
-      toast.error("Failed to add review member.");
+      toast.error(error.response.data.message)
     } finally {
       setLoading(false);
     }

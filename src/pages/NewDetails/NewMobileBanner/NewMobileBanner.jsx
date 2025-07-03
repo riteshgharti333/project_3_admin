@@ -17,20 +17,20 @@ const NewMobileBanner = () => {
   const [loading, setLoading] = useState(false);
 
   const handleFileChange = (event) => {
-  const file = event.target.files[0];
-  if (file) {
-    const maxSize = 500 * 1024; // 500 KB
+    const file = event.target.files[0];
+    if (file) {
+      const maxSize = 500 * 1024; // 500 KB
 
-    if (file.size > maxSize) {
-      toast.error("Image size should be less than 500 KB");
-      return;
+      if (file.size > maxSize) {
+        toast.error("Image size should be less than 500 KB");
+        return;
+      }
+
+      const imageUrl = URL.createObjectURL(file);
+      setSelectedImage(imageUrl);
+      setFile(file);
     }
-
-    const imageUrl = URL.createObjectURL(file);
-    setSelectedImage(imageUrl);
-    setFile(file);
-  }
-};
+  };
   const handleButtonClick = () => {
     fileInputRef.current.click();
   };
@@ -51,6 +51,9 @@ const NewMobileBanner = () => {
         `${baseUrl}/mobile/new-mobile-banner`,
         formData,
         {
+          withCredentials: true,
+        },
+        {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
@@ -62,7 +65,7 @@ const NewMobileBanner = () => {
       }
     } catch (error) {
       console.error("Error adding home banner:", error);
-      toast.error("Failed to add home banner.");
+      toast.error(error.response.data.message);
     } finally {
       setLoading(false);
     }

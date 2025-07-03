@@ -29,9 +29,9 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     dispatch({ type: "LOGIN_START" });
-  
+
     try {
       const response = await axios.post(
         `${baseUrl}/auth/login`,
@@ -41,22 +41,20 @@ const Login = () => {
         },
         { withCredentials: true }
       );
-  
+
       dispatch({ type: "LOGIN_SUCCESS", payload: response?.data });
-  
+
       if (response?.data) {
         toast.success(response?.data?.message || "Login successful!");
       }
-  
+
       navigate("/");
     } catch (error) {
-      dispatch({ type: "LOGIN_FAILURE" });
-     
       toast.error(error.response.data.message);
+      dispatch({ type: "LOGIN_FAILURE" });
       console.error("Login Error:", error);
     }
   };
-  
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);

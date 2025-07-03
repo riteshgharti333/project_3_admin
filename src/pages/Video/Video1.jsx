@@ -28,7 +28,10 @@ const Video1 = () => {
     if (!id) return;
     try {
       const { data } = await axios.delete(
-        `${baseUrl}/wedding-cinematography/${id}`
+        `${baseUrl}/wedding-cinematography/${id}`,
+        {
+          withCredentials: true,
+        }
       );
       if (data) {
         toast.success(data.message);
@@ -36,7 +39,7 @@ const Video1 = () => {
       setAllData((prev) => prev.filter((video) => video._id !== id));
     } catch (error) {
       console.error("Error deleting video:", error);
-      toast.error("Failed to delete video!");
+      toast.error(error.response.data.message);
     }
   };
 
@@ -74,14 +77,17 @@ const Video1 = () => {
     try {
       const response = await axios.put(
         `${baseUrl}/wedding-cinematography/reorder`,
-        { orderedIds }
+        { orderedIds },
+        {
+          withCredentials: true,
+        }
       );
       if (response.data.success) {
         toast.success(response.data.message);
       }
     } catch (error) {
       console.error("Error updating video order:", error);
-      toast.error("Failed to update video order!");
+      toast.error(error.response.data.message)
     }
   };
 

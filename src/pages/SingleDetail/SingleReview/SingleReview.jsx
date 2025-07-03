@@ -28,12 +28,14 @@ const SingleReview = () => {
 
   const deleteSingleData = async () => {
     try {
-      const { data } = await axios.delete(`${baseUrl}/review/${id}`);
+      const { data } = await axios.delete(`${baseUrl}/review/${id} `, {
+        withCredentials: true,
+      });
       toast.success(data.message);
       navigate("/reviews");
     } catch (error) {
       console.log(error);
-      toast.error("Faled to delte Review");
+      toast.error(error.response.data.message);
     }
   };
 
@@ -47,9 +49,9 @@ const SingleReview = () => {
         </Link>
 
         <div className="singleReview-top-btns">
-          <Link to={`/review/${id}`} className="update-btn">
+          {/* <Link to={`/update-review/${id}`} className="update-btn">
             Update
-          </Link>
+          </Link> */}
           <Link
             onClick={() => deleteSingleData(singleData._id)}
             className="update-btn"

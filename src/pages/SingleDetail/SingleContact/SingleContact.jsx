@@ -27,11 +27,14 @@ const SingleContact = () => {
 
   const deleteSingleData = async () => {
     try {
-      const { data } = await axios.delete(`${baseUrl}/contact/${id}`);
+      const { data } = await axios.delete(`${baseUrl}/contact/${id}`, {
+        withCredentials: true,
+      });
       toast.success(data.message);
       navigate(-1);
     } catch (error) {
       console.log(error);
+      toast.error(error.response.data.message);
     }
   };
 

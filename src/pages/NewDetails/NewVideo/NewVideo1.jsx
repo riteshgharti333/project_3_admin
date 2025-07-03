@@ -22,7 +22,10 @@ const NewVideo1 = () => {
     try {
       const { data } = await axios.post(
         `${baseUrl}/wedding-cinematography/new-video`,
-        { link }
+        { link },
+        {
+          withCredentials: true,
+        }
       );
 
       if (data.success) {
@@ -31,7 +34,7 @@ const NewVideo1 = () => {
       }
     } catch (error) {
       console.error("Error adding video:", error);
-      toast.error("Failed to add video.");
+      toast.error(error.response.data.message);
     } finally {
       setLoading(false);
     }

@@ -1,226 +1,190 @@
 .sidebar {
-  background-color: #ffdee9;
-  background-image: linear-gradient(0deg, #ffdee9 0%, #b5fffc 100%);
-  border-radius: 10px;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  width: 280px;
+  padding: 1rem 0;
+  border-radius: 10px;
+  background-color: #ffdee9;
+  background-image: linear-gradient(0deg, #ffdee9 0%, #b5fffc 100%);
 
   .sidebar-logo {
     display: flex;
     justify-content: center;
-    margin: 20px 0px 40px 0px;
+    margin-bottom: 2rem;
+    padding: 0 1.5rem;
+
     img {
-      width: 150px;
+      width: 100px;
+      height: auto;
+      object-fit: contain;
     }
   }
 
   .sidebar-contents {
-    padding: 0px 20px;
-    flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    flex: 1;
+    padding: 0 1rem;
+    overflow-y: auto;
 
-    .sidebar-option {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      background-color: orange;
-      padding: 12px 15px;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-
-      &.active {
-        background: #000;
-        color: #fff;
-        transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-      }
-
-      &:hover {
-        background: #000;
-        color: #fff;
-        transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-      }
-
-      &:active {
-        transform: translateY(0);
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      }
-
-      .sidebar-icon {
-        font-size: 20px;
-        transition: color 0.3s ease;
-        flex-shrink: 0;
-      }
-
-      p {
-        font-size: 16px;
-        font-weight: 500;
-      }
-
-      .sidebar-services {
-        flex-direction: column;
-        .sidebar-option-services {
-          display: flex;
-          justify-content: space-between;
-          width: 100%;
-          align-items: center;
-
-          .sidebar-option-services-left {
-            display: flex;
-            gap: 15px;
-
-            .sidebar-icon {
-              font-size: 20px;
-              transition: color 0.3s ease;
-            }
-
-            p {
-              font-size: 16px;
-              font-weight: 500;
-            }
-          }
-
-          .sidebar-right {
-            font-size: 20px;
-          }
-        }
-      }
+    &::-webkit-scrollbar {
+      width: 6px;
+      background: transparent;
     }
 
-    .sidebar-services {
-      flex-direction: column;
-      .sidebar-option-services {
-        display: flex;
-        justify-content: space-between;
-        width: 100%;
-        align-items: center;
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        background-color: orange;
-        padding: 12px 15px;
-        border-radius: 12px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(0, 0, 0, 0.3);
+      border-radius: 999px;
+    }
 
-        &.active {
-          background: #000;
-          color: #fff;
-          transform: translateY(-2px);
-          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-        }
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    scrollbar-width: none;
+
+    .menu-items {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      li {
+        margin: 0;
+        padding: 0;
+      }
+
+      .menu-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem 1rem;
+        border-radius: 0.5rem;
+        color: #2c3e50;
+        font-size: 0.95rem;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        cursor: pointer;
 
         &:hover {
-          background: #000;
-          color: #fff;
-          transform: translateY(-2px);
-          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+          background-color: #f0f0f0;
+          color: #3498db;
         }
 
-        .sidebar-option-services-left {
+        &.active {
+          background-color: #3498db;
+          color: white;
+
+          .menu-icon {
+            color: white;
+          }
+        }
+
+        .menu-icon {
           display: flex;
-          gap: 15px;
-
-          .sidebar-icon {
-            font-size: 20px;
-            transition: color 0.3s ease;
-          }
-
-          p {
-            font-size: 16px;
-            font-weight: 500;
-          }
+          color: #7f8c8d;
         }
 
-        .sidebar-right {
-          font-size: 20px;
+        .menu-label {
+          flex: 1;
+        }
+
+        .menu-arrow {
+          display: flex;
+          color: #7f8c8d;
         }
       }
-      .services-links {
-        ul {
-          list-style: none;
-          margin-top: 10px;
-          margin-left: 10px;
 
-          li {
-            padding: 7px 5px;
-            transition: all 0.3s ease-in-out;
-            border-radius: 12px;
+      .services-container {
+        display: flex;
+        flex-direction: column;
 
-            &:hover {
-              background: #5858582f;
+        .submenu {
+          margin-top: 0.25rem;
+          margin-left: 1.5rem;
+          overflow: hidden;
+
+          ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+
+            li {
+              margin: 0;
+              padding: 0;
+
+              .submenu-item {
+                padding: 0.5rem 1rem;
+                border-radius: 0.5rem;
+                color: #2c3e50;
+                font-size: 0.9rem;
+                transition: all 0.2s ease;
+
+                &:hover {
+                  background-color: #f0f0f0;
+                  color: #3498db;
+                }
+              }
+            }
+
+            .no-services {
+              padding: 0.5rem 1rem;
+              color: #7f8c8d;
+              font-size: 0.85rem;
+              font-style: italic;
             }
           }
         }
       }
     }
-  }
 
-  button {
-    margin-top: auto;
-    padding: 12px 24px;
-    font-size: 16px;
-    font-weight: bold;
-    color: #fff;
-    background-color: #007bff;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    outline: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    margin: 20px;
-    text-transform: uppercase;
+    .auth-button {
+      margin-top: auto;
+      padding: 1rem;
 
-    .login-btn {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+      .logout-btn,
+      .login-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        width: 100%;
+        padding: 0.75rem;
+        border-radius: 0.5rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        border: none;
+        font-size: 0.95rem;
+      }
 
-    .login-icon {
-      font-size: 25px;
-    }
+      .logout-btn {
+        background-color: #f0f0f0;
+        color: #e74c3c;
 
-    &:hover {
-      background-color: #0056b3;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-    }
+        &:hover {
+          background-color: #e0e0e0;
+        }
+      }
 
-    &:active {
-      background-color: #004080;
-      transform: translateY(0);
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
+      .login-btn {
+        background-color: #3498db;
+        color: white;
+        text-decoration: none;
 
-    &:focus {
-      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
-    }
-
-    &:disabled {
-      background-color: #cccccc;
-      cursor: not-allowed;
-      opacity: 0.7;
-    }
-
-    .button-icon {
-      font-size: 20px;
-      transition: transform 0.3s ease;
-    }
-
-    &:hover .button-icon {
-      transform: scale(1.1);
+        &:hover {
+          background-color: #2980b9;
+        }
+      }
     }
   }
 }

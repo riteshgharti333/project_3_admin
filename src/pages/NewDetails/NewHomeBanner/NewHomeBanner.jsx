@@ -20,12 +20,12 @@ const NewHomeBanner = () => {
     const file = event.target.files[0];
     if (file) {
       const maxSize = 500 * 1024;
-  
+
       if (file.size > maxSize) {
         toast.error("Image size should be less than 500 KB");
         return;
       }
-  
+
       const imageUrl = URL.createObjectURL(file);
       setSelectedImage(imageUrl);
       setFile(file);
@@ -52,6 +52,9 @@ const NewHomeBanner = () => {
         `${baseUrl}/home-banner/new-home-banner`,
         formData,
         {
+          withCredentials: true,
+        },
+        {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
@@ -63,7 +66,7 @@ const NewHomeBanner = () => {
       }
     } catch (error) {
       console.error("Error adding home banner:", error);
-      toast.error("Failed to add home banner.");
+      toast.error(error.response.data.message);
     } finally {
       setLoading(false);
     }

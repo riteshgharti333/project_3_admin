@@ -38,14 +38,14 @@ const AddingServices = ({ title, path }) => {
 
   const handleImageChange = useCallback((event) => {
     const selectedFile = event.target.files[0];
-    const maxSize = 300 * 1024; 
-  
+    const maxSize = 300 * 1024;
+
     if (selectedFile) {
       if (selectedFile.size > maxSize) {
         toast.error("Image size should be less than 300 KB");
         return;
       }
-  
+
       setImage(URL.createObjectURL(selectedFile));
       setFile(selectedFile);
     }
@@ -79,49 +79,52 @@ const AddingServices = ({ title, path }) => {
       toast.error("No images selected for update.");
       return;
     }
-  
+
     setLoading(true);
-  
+
     try {
       const formData = new FormData();
-  
+
       // ✅ Append new images
       serviceImages.forEach((photo) => {
         formData.append("images", photo.file);
       });
-  
+
       // ✅ Append only the images you want to keep
       singleData.forEach((imageUrl) => {
-        formData.append("images", imageUrl);  
+        formData.append("images", imageUrl);
       });
-  
+
       // ✅ Append the service name
       formData.append("serviceName", serviceName);
-  
+
       const response = await axios.put(
         `${baseUrl}/services/${path}`,
         formData,
+
+        {
+          withCredentials: true,
+        },
         {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
-  
+
       if (response?.data?.success) {
         toast.success(response.data.message);
         setServicesImage([]);
-        
+
         // ✅ Refetch updated images
         const { data } = await axios.get(`${baseUrl}/services${path}`);
         setSingleData(data.serviceImages.images);
       }
     } catch (error) {
       console.error("Error updating images:", error);
-      toast.error("Failed to update images.");
+      toast.error(error.response.data.message);
     } finally {
       setLoading(false);
     }
   };
-  
 
   const handleDelete = (index) => {
     const serviceImagesDetails = singleData.filter((_, i) => i !== index);

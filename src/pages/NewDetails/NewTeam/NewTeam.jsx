@@ -54,9 +54,16 @@ const NewTeam = () => {
       formData.append("title", title);
       formData.append("image", file);
 
-      const { data } = await axios.post(`${baseUrl}/team/new-team`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const { data } = await axios.post(
+        `${baseUrl}/team/new-team`,
+        formData,
+        {
+          withCredentials: true,
+        },
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
 
       if (data.success) {
         toast.success(data.message);
@@ -69,7 +76,7 @@ const NewTeam = () => {
       }
     } catch (error) {
       console.error("Error adding Team:", error);
-      toast.error("Failed to add team member.");
+      toast.error(error.response.data.message);
     } finally {
       setLoading(false);
     }

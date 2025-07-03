@@ -52,6 +52,9 @@ const NewPortfolio = () => {
         `${baseUrl}/portfolio/new-portfolio`,
         formData,
         {
+          withCredentials: true,
+        },
+        {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
@@ -66,7 +69,7 @@ const NewPortfolio = () => {
       }
     } catch (error) {
       console.error("Error adding portfolio:", error);
-      toast.error("Failed to add portfolio.");
+      toast.error(error.response.data.message);
     } finally {
       setLoading(false);
     }

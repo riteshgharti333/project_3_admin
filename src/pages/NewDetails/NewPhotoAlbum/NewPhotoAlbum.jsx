@@ -19,7 +19,7 @@ const NewPhotoAlbum = () => {
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      const maxSize = 500 * 1024; 
+      const maxSize = 500 * 1024;
 
       if (file.size > maxSize) {
         toast.error("Image size should be less than 500 KB");
@@ -52,6 +52,9 @@ const NewPhotoAlbum = () => {
         `${baseUrl}/photoAlbum/new-photo-album`,
         formData,
         {
+          withCredentials: true,
+        },
+        {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
@@ -62,7 +65,7 @@ const NewPhotoAlbum = () => {
       }
     } catch (error) {
       console.error("Error adding photo album:", error);
-      toast.error("Failed to add photo album.");
+      toast.error(error.response.data.message);
     } finally {
       setLoading(false);
     }

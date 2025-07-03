@@ -28,11 +28,14 @@ const SingleTeams = () => {
 
   const deleteSingleData = async () => {
     try {
-      const { data } = await axios.delete(`${baseUrl}/team/${id}`);
+      const { data } = await axios.delete(`${baseUrl}/team/${id}`, {
+        withCredentials: true,
+      });
       toast.success(data.message);
       navigate("/teams");
     } catch (error) {
       console.log(error);
+      toast.error(error.response.data.message);
     }
   };
 

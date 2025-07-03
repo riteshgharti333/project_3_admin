@@ -16,10 +16,9 @@ const SingleContact2 = () => {
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    const options = { day: 'numeric', month: 'short', year: 'numeric' };
-    return date.toLocaleDateString('en-GB', options); // "2 Jan 2023"
+    const options = { day: "numeric", month: "short", year: "numeric" };
+    return date.toLocaleDateString("en-GB", options); // "2 Jan 2023"
   };
-  
 
   useEffect(() => {
     const fetchSingleData = async () => {
@@ -39,12 +38,16 @@ const SingleContact2 = () => {
   const deleteSingleData = async () => {
     try {
       const { data } = await axios.delete(
-        `${baseUrl}/contact2/contact-2/${id}`
+        `${baseUrl}/contact2/contact-2/${id}`,
+        {
+          withCredentials: true, 
+        }
       );
       toast.success(data.message);
       navigate(-1);
     } catch (error) {
       console.log(error);
+      toast.error(error.response.data.message);
     }
   };
 

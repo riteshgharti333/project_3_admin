@@ -33,17 +33,18 @@ const HomeBanner = () => {
     if (!id) return;
 
     try {
-      const { data } = await axios.delete(`${baseUrl}/home-banner/${id}`);
+      const { data } = await axios.delete(`${baseUrl}/home-banner/${id}`, {
+        withCredentials: true,
+      });
 
       if (data) {
         toast.success(data.message);
       }
       setAllData((prev) => prev.filter((homeBanner) => homeBanner._id !== id));
-
       toast.success(data.message);
     } catch (error) {
       console.error("Error deleting home banner:", error);
-      toast.error("Failed to delete home banner!");
+      toast.error(error.response.data.message);
     }
   };
 
